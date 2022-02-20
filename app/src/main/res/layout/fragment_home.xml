@@ -1,0 +1,2454 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NavigationDrawerActivity">
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="710dp">
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:ignore="SpeakableTextPresentCheck">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/revenue_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="5dp">
+
+                        <TextView
+                            android:id="@+id/pendapatanKapan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="65dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:paddingTop="20dp"
+                            android:paddingBottom="20dp"
+                            android:text="Pendapatan Hari ini"
+                            android:textAlignment="center"
+                            android:textSize="28dp" />
+
+                        <TextView
+                            android:id="@+id/nominalPendapatan"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="95dp"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="Rp0"
+                            android:textAlignment="center"
+                            android:textColor="#E62E7D32"
+                            android:textSize="36dp" />
+
+
+                    </androidx.cardview.widget.CardView>
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/stockContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="5dp">
+
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="70dp"
+                            android:layout_marginRight="20dp"
+                            android:paddingBottom="25dp">
+
+
+                            <TableRow android:background="#4D0277BD">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="No"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Item Name"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Sales"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Stock"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="1"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Bakso"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="makananStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="0"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="2"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Kentang G"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:onClick="makananStockClick"
+                                            android:tag="1"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="3"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Mie Ayam"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_3"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:onClick="makananStockClick"
+                                            android:tag="2"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="4"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="NasBung A"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_4"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="3"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="5"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="NasBung B"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_5"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="4"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="6"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Nasi Ayam"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_6"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="5"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="7"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Nasi Pindang"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_7"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="6"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="8"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Nasi Telur"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_8"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_8"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="7"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="9"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Pisang G"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_9"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_9"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="8"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="10"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Popmie"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_10"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_10"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="9"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="11"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Sereal"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_11"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_11"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="10"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="12"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Tahu Crispy"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_12"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_12"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="11"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="13"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Siomay"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_13"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_13"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="12"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="14"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Sosis Naget"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales_14"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock_14"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="13"
+                                            android:onClick="makananStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+
+                        </TableLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:paddingTop="5dp"
+                            android:text="Makanan Sales &amp; Inventory"
+                            android:textAlignment="center"
+                            android:textSize="20dp" />
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/stockContainerMinuman"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginBottom="80dp"
+                        android:orientation="vertical"
+                        android:padding="20dp"
+                        app:cardCornerRadius="20dp"
+                        app:cardElevation="5dp">
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:fontFamily="@font/montserrat_bold"
+                            android:text="Minuman Sales &amp; Inventory"
+                            android:textAlignment="center"
+                            android:textSize="20dp" />
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="70dp"
+                            android:layout_marginRight="20dp"
+                            android:paddingBottom="25dp">
+
+
+                            <TableRow android:background="#4D0277BD">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="No"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Item Name"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Sales"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_bold"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Stock"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="1"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Aqua 600ml"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_1"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_1"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="0"
+                                            android:onClick="minumanStockClick"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="2"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Coca Cola"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_2"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_2"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="1"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="3"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Es Kopi Durian"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_3"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_3"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="2"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="4"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Es Teh"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_4"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_4"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="3"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="5"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Fanta"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_5"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_5"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="4"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="6"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Floridina"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_6"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_6"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="5"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="7"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Frestea"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_7"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_7"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="6"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="8"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Isoplus"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_8"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_8"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="7"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="9"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Kopi Hitam"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_9"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_9"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="8"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="10"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Milo"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_10"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_10"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="9"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="11"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Sprite"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_11"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_11"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="10"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="12"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Teh Pucuk H"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_12"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_12"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:onClick="minumanStockClick"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="11"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+
+                        </TableLayout>
+
+
+                    </androidx.cardview.widget.CardView>
+
+                    <!--                android:background="@drawable/layout_bg"-->
+                    app:cardUseCompatPadding="true"
+                    app:cardElevation="4dp"
+
+                    />
+
+
+                </LinearLayout>
+
+            </ScrollView>
+
+
+        </ScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/refresh"
+        android:layout_alignEnd="@+id/refresh"
+        android:layout_marginBottom="0dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/timeframeBelt_container"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/layout_bg"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingTop="0dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp"
+            app:cardBackgroundColor="#FCFAFA"
+            app:cardElevation="20dp">
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#808A8A8A" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0"
+                    android:paddingTop="10dp"
+                    android:text="Timeframe"
+                    android:textAlignment="viewEnd"
+                    android:textSize="10dp" />
+
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonDaily"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/buttonSelected"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:onClick="timeFrameButtonClick"
+                    android:tag="day"
+                    android:text="Day"
+                    android:textSize="12dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonMonthly"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/buttonNotSelected"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:onClick="timeFrameButtonClick"
+                    android:tag="month"
+                    android:text="Month"
+                    android:textSize="10dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonYearly"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/buttonNotSelected"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:onClick="timeFrameButtonClick"
+                    android:tag="year"
+                    android:text="Year"
+                    android:textSize="12dp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/buttonAlltime"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:backgroundTint="@color/buttonNotSelected"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:onClick="timeFrameButtonClick"
+                    android:tag="alltime"
+                    android:text="All"
+                    android:textSize="10dp" />
+
+            </LinearLayout>
+
+
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+
+
+</RelativeLayout>
+
+
+
+
+
+
+
+
+
+
+
+

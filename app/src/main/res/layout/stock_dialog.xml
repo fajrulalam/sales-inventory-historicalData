@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/judul"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_bold"
+        android:gravity="center"
+        android:text="Stock X"
+        android:textColor="#00695C"
+        android:textSize="18dp" />
+
+    <EditText
+        android:id="@+id/tambahanStockEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/currentStockTextView"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:hint="Tambah berapa stock..."
+        android:inputType="numberPassword" />
+
+    <TextView
+        android:id="@+id/currentStockTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/judul"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:text="Current Stock :   " />
+    <RelativeLayout
+        android:id="@+id/pesan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tambahanStockEditText">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/waktuPengambilanTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/diambilKapanJam"
+                android:layout_marginStart="0dp"
+                android:layout_marginRight="10dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="Waktu Pengambilan"
+                android:textColor="#9F9F9F"
+                android:textSize="14sp" />
+
+
+            <EditText
+                android:id="@+id/diambilKapanJam"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/waktuPengambilanTextView"
+                android:gravity="center"
+                android:hint="00"
+                android:inputType="numberPassword" />
+            <TextView
+                android:id="@+id/pemisah"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/diambilKapanJam"
+                android:text=":"
+                android:textSize="12sp"
+                android:fontFamily="@font/montserrat_bold"
+
+                android:layout_toEndOf="@id/diambilKapanJam"/>
+
+            <EditText
+                android:id="@+id/diambilKapanMenit"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/pemisah"
+                android:gravity="center"
+                android:hint="00"
+                android:inputType="numberPassword" />
+
+
+
+
+        </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+
+
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="85dp"
+        android:layout_height="46dp"
+        android:layout_below="@+id/pesan"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toStartOf="@+id/okButton"
+        android:backgroundTint="#80D84315"
+        android:gravity="center"
+        android:text="Cancel"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/okButton"
+        android:layout_width="85dp"
+        android:layout_height="46dp"
+        android:layout_below="@+id/pesan"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="#8000695C"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:text="Ok" />
+
+
+
+
+</RelativeLayout>
