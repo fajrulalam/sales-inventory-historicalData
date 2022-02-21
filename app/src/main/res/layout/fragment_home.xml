@@ -2293,6 +2293,85 @@
                             </TableRow>
 
 
+                            <TableRow>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="12"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:layout_width="60dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="Teh Panas"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <TextView
+                                    android:id="@+id/sales2_13"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="0"
+                                    android:textColor="#B3000000"
+                                    android:textSize="14sp"></TextView>
+
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="0dp"
+                                    android:layout_height="43.5dp"
+                                    android:layout_weight="4"
+                                    android:background="@drawable/layout_bg"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:foreground="@drawable/layout_bg"
+                                    android:gravity="center"
+                                    android:padding="10dp"
+                                    android:text="@string/my_text"
+                                    android:textColor="#1565C0"
+                                    android:textSize="14sp">
+
+                                    <androidx.cardview.widget.CardView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:backgroundTint="#EFEFEF">
+
+                                        <TextView
+                                            android:id="@+id/stock2_13"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:fontFamily="@font/poppins_regular"
+                                            android:gravity="center"
+                                            android:paddingLeft="11dp"
+                                            android:paddingTop="3dp"
+                                            android:paddingRight="10dp"
+                                            android:tag="11"
+                                            android:text="0"
+                                            android:textAlignment="center"
+                                            android:textColor="#B3000000"
+                                            android:textSize="14sp" />
+
+                                    </androidx.cardview.widget.CardView>
+                                </androidx.cardview.widget.CardView>
+
+                            </TableRow>
+
+
                         </TableLayout>
 
 

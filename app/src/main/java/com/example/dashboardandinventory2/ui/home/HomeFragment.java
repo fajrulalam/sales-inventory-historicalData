@@ -128,6 +128,8 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
     TextView floridinaStock;
     TextView isoplusSales;
     TextView isoplusStock;
+    TextView tehHangatSales;
+    TextView tehHangatStock;
 
 
 
@@ -233,13 +235,14 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
         spriteStock = root.findViewById(R.id.stock2_11);
         tehPucukHarumSales = root.findViewById(R.id.sales2_12);
         tehPucukHarumStock = root.findViewById(R.id.stock2_12);
+        tehHangatSales = root.findViewById(R.id.sales2_13);
+        tehHangatStock = root.findViewById(R.id.stock2_13);
 
         //Minuman Stock On Click listener
         for (int i =1; i < 15; i++) {
             Resources res = getResources();
             String id = "stock_" + i;
             int idView = res.getIdentifier( id, "id", getContext().getPackageName());
-            Log.i("id", id);
             View eventViewMakanan = root.findViewById(idView);
             eventViewMakanan.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -250,7 +253,7 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
         }
 
         //Minuman Stock On Click listener
-        for (int i =1; i < 13; i++) {
+        for (int i =1; i < 14; i++) {
             int idView=getResources().getIdentifier("stock2_" + i, "id", getContext().getPackageName());
             View eventViewMakanan = root.findViewById(idView);
             eventViewMakanan.setOnClickListener(new View.OnClickListener() {
@@ -262,16 +265,6 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
         }
 
 
-//        reff = FirebaseDatabase.getInstance("https://point-of-sales-app-25e2b-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference().child("TransacationDetail");
-//        reffStock = FirebaseDatabase.getInstance("https://point-of-sales-app-25e2b-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference().child("StockCount");
-//        revToday = reff.orderByChild("timeStamp").startAt(getDate()).endAt(getDate() + "\uf8ff");
-//        revMonth = reff.orderByChild("timeStamp").startAt(getMonth()).endAt(getMonth() + "\uf8ff");
-//        revYear = reff.orderByChild("timeStamp").startAt(getYear()).endAt(getYear() + "\uf8ff");
-
-
-
-//        totalHariIniTextView = findViewById(R.id.TotalHariIni);
-//        revToday.addListenerForSingleValueEvent(revenueCount);
 
         InsertMenu();
         resetData();
@@ -470,6 +463,10 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
                 Object sales26_obj = map.get("Teh Pucuk Harum");
                 String sales26_str = sales26_obj.toString();
                 tehPucukHarumStock.setText(sales26_str);
+                Object sales27_obj = map.get("Teh Hangat");
+                String sales27_str = sales27_obj.toString();
+                tehHangatStock.setText(sales27_str);
+
             }
         });
 
@@ -505,7 +502,8 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
         minumanList.add("Kopi Hitam");
         minumanList.add("Milo");
         minumanList.add("Sprite");
-        minumanList.add("Teh Pucuk Harum"); //12
+        minumanList.add("Teh Pucuk Harum");
+        minumanList.add("Teh Hangat"); //13
 
 
 
@@ -605,6 +603,9 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
                 Object sales26_obj = map.get("Teh Pucuk Harum");
                 String sales26_str = sales26_obj.toString();
                 tehPucukHarumSales.setText(sales26_str);
+                Object sales27_obj = map.get("Teh Hangat");
+                String sales27_str = sales27_obj.toString();
+                tehHangatSales.setText(sales27_str);
             }
         });
     }
