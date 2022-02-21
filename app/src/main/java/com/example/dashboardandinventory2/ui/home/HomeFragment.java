@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.app.ProgressDialog;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.example.dashboardandinventory2.R;
 import com.example.dashboardandinventory2.databinding.FragmentHomeBinding;
 import com.example.dashboardandinventory2.stockDialog;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -232,6 +234,33 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
         tehPucukHarumSales = root.findViewById(R.id.sales2_12);
         tehPucukHarumStock = root.findViewById(R.id.stock2_12);
 
+        //Minuman Stock On Click listener
+        for (int i =1; i < 15; i++) {
+            Resources res = getResources();
+            String id = "stock_" + i;
+            int idView = res.getIdentifier( id, "id", getContext().getPackageName());
+            Log.i("id", id);
+            View eventViewMakanan = root.findViewById(idView);
+            eventViewMakanan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    makananStockClick(view);
+                }
+            });
+        }
+
+        //Minuman Stock On Click listener
+        for (int i =1; i < 13; i++) {
+            int idView=getResources().getIdentifier("stock2_" + i, "id", getContext().getPackageName());
+            View eventViewMakanan = root.findViewById(idView);
+            eventViewMakanan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    minumanStockClick(view);
+                }
+            });
+        }
+
 
 //        reff = FirebaseDatabase.getInstance("https://point-of-sales-app-25e2b-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference().child("TransacationDetail");
 //        reffStock = FirebaseDatabase.getInstance("https://point-of-sales-app-25e2b-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference().child("StockCount");
@@ -290,6 +319,8 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
 
         updateStock();
         querySales("DailyTransaction", getDate());
+
+
 
 
 
@@ -672,9 +703,13 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
         fs.collection("Stock").document("Stocks").update(document, FieldValue.increment(tambahanStock)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(getContext(), document + "stock updated +" + tambahanStock, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), document + "stock updated +" + tambahanStock, Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(sosisNagetSales,document + "Snackbar stock updated +" + tambahanStock, Snackbar.LENGTH_LONG );
+                snackbar.show();
                 updateStock();
             }
         });
     }
+
+
 }

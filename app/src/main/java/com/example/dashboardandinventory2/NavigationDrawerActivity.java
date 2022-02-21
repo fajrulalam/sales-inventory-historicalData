@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.app.ProgressDialog;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -236,6 +237,34 @@ public class NavigationDrawerActivity extends AppCompatActivity implements stock
         spriteStock = findViewById(R.id.stock2_11);
         tehPucukHarumSales = findViewById(R.id.sales2_12);
         tehPucukHarumStock = findViewById(R.id.stock2_12);
+
+
+        //Minuman Stock On Click listener
+        for (int i =1; i < 15; i++) {
+            Resources res = getResources();
+            String id = "stock_" + i;
+            int idView = res.getIdentifier( id, "id", getPackageName());
+            Log.i("id", id);
+            View eventViewMakanan = findViewById(idView);
+            eventViewMakanan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    makananStockClick(view);
+                }
+            });
+        }
+
+        //Minuman Stock On Click listener
+        for (int i =1; i < 13; i++) {
+            int idView=getResources().getIdentifier("stock2_" + i, "id", getPackageName());
+            View eventViewMakanan = findViewById(idView);
+            eventViewMakanan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    minumanStockClick(view);
+                }
+            });
+        }
 
 
 //        reff = FirebaseDatabase.getInstance("https://point-of-sales-app-25e2b-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference().child("TransacationDetail");
@@ -676,7 +705,9 @@ public class NavigationDrawerActivity extends AppCompatActivity implements stock
         fs.collection("Stock").document("Stocks").update(document, FieldValue.increment(tambahanStock)).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(getApplicationContext(), document + "stock updated +" + tambahanStock, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), document + "stock updated +" + tambahanStock, Toast.LENGTH_SHORT).show();
+                Snackbar snackbar = Snackbar.make(sosisNagetSales,document + "Snackbar stock updated +" + tambahanStock, Snackbar.LENGTH_LONG );
+                snackbar.show();
                 updateStock();
             }
         });
