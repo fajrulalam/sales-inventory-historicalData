@@ -5,9 +5,12 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +26,7 @@ public class GalleryFragment extends Fragment {
     private GalleryViewModel galleryViewModel;
     private FragmentGalleryBinding binding;
     private AutoCompleteTextView autoCompleteTextView;
+    private LinearLayout start_end_layout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -33,11 +37,34 @@ public class GalleryFragment extends Fragment {
         View root = binding.getRoot();
 
         autoCompleteTextView = root.findViewById(R.id.autoCompleteTextView2);
+        start_end_layout = root.findViewById(R.id.start_end_input);
 
         String[] granularity = getResources().getStringArray(R.array.granularity);
         ArrayAdapter arrayAdapter = new ArrayAdapter(getContext(), R.layout.dropdown_granularity, granularity);
         autoCompleteTextView.setAdapter(arrayAdapter);
         autoCompleteTextView.setInputType(View.AUTOFILL_TYPE_NONE);
+
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                Toast.makeText(getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
+                switch (String.valueOf(adapterView.getItemAtPosition(position))) {
+                    case "Daily Transaction":
+                        start_end_layout.setVisibility(View.VISIBLE);
+                        Toast.makeText(getContext(), "Daily Transactions", Toast.LENGTH_SHORT).show();
+                        break;
+                    case "Monthly Transaction":
+                        start_end_layout.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Monthly Transactions", Toast.LENGTH_SHORT).show();
+                        break;
+                    case "Yearly Transaction":
+                        start_end_layout.setVisibility(View.GONE);
+                        Toast.makeText(getContext(), "Yearly Transactions", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
 
 
 
