@@ -8,6 +8,8 @@
     android:background="#FFFFFF">
 
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:paddingBottom="30dp"
-        android:background="@color/purple_500">
+        android:background="@color/primary_light">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputType"
@@ -56,7 +58,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputType"
-            android:visibility="gone">
+            android:visibility="visible">
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -68,6 +70,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="100dp"
+                    android:id="@+id/start_input"
                     android:layout_height="50dp"
                     android:layout_marginTop="5dp"
                     android:hint="start"
@@ -90,14 +93,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:padding="1dp"
-                app:startIconDrawable="@drawable/ic_calendar">
+                app:startIconDrawable="@drawable/ic_calendar"
+                android:inputType="none">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/end_input"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="5dp"
                     android:hint="end"
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:inputType="none"/>
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
