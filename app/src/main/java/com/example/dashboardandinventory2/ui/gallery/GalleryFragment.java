@@ -186,10 +186,108 @@ public class GalleryFragment extends Fragment {
                     case "Monthly Transaction":
                         start_end_layout.setVisibility(View.GONE);
                         Toast.makeText(getContext(), "Monthly Transactions", Toast.LENGTH_SHORT).show();
+                        fs.collection("MonthlyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+                                if (error !=null) {
+                                    Log.e("error!", "onEvent", error);
+                                    return;
+                                }
+
+                                if (value != null){
+                                    Log.i("Checkpoint", "Value is detected" );
+                                    itemTitleList.clear();
+                                    customerNoList.clear();
+                                    revenueList.clear();
+                                    List<DocumentSnapshot> snapshotList = value.getDocuments();
+                                    for (DocumentSnapshot snapshot : snapshotList) {
+                                        Map<String, Object> map = snapshot.getData();
+                                        Object date_obj = map.get("timestamp");
+                                        String date_str = (String.valueOf(date_obj));
+                                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                                        Long epoch_long = Long.parseLong(date_str_epoch);
+                                        ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
+                                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("MMMM yyyy"));
+                                        Object customerNo = map.get("customerNumber");
+                                        String customerNo_str = (String.valueOf(customerNo));
+                                        Object revenue = map.get("total");
+                                        revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
+
+                                        String revenue_str = (String.valueOf(revenue));
+
+//
+                                        itemTitleList.add(dateTime_formatted);
+                                        customerNoList.add(customerNo_str);
+                                        revenueList.add(revenue_str);
+
+
+
+                                    }
+//                                    Log.i("Title List", ""+itemTitleList);
+//                                    Log.i("Customer List", ""+customerNoList);
+//                                    Log.i("Revemue List", ""+revenueList);
+                                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                                    recyclerView.setAdapter(recycleAdapter);
+
+                                }
+                            }
+                        });
                         break;
                     case "Yearly Transaction":
                         start_end_layout.setVisibility(View.GONE);
                         Toast.makeText(getContext(), "Yearly Transactions", Toast.LENGTH_SHORT).show();
+                        fs.collection("YearlyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+                                if (error !=null) {
+                                    Log.e("error!", "onEvent", error);
+                                    return;
+                                }
+
+                                if (value != null){
+                                    Log.i("Checkpoint", "Value is detected" );
+                                    itemTitleList.clear();
+                                    customerNoList.clear();
+                                    revenueList.clear();
+                                    List<DocumentSnapshot> snapshotList = value.getDocuments();
+                                    for (DocumentSnapshot snapshot : snapshotList) {
+                                        Map<String, Object> map = snapshot.getData();
+                                        Object date_obj = map.get("timestamp");
+                                        String date_str = (String.valueOf(date_obj));
+                                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                                        Long epoch_long = Long.parseLong(date_str_epoch);
+                                        ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
+                                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("YYYY"));
+                                        Object customerNo = map.get("customerNumber");
+                                        String customerNo_str = (String.valueOf(customerNo));
+                                        Object revenue = map.get("total");
+                                        revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
+
+                                        String revenue_str = (String.valueOf(revenue));
+
+//
+                                        itemTitleList.add(dateTime_formatted);
+                                        customerNoList.add(customerNo_str);
+                                        revenueList.add(revenue_str);
+
+
+
+                                    }
+//                                    Log.i("Title List", ""+itemTitleList);
+//                                    Log.i("Customer List", ""+customerNoList);
+//                                    Log.i("Revemue List", ""+revenueList);
+                                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                                    recyclerView.setAdapter(recycleAdapter);
+
+                                }
+                            }
+                        });
                         break;
                 }
             }
