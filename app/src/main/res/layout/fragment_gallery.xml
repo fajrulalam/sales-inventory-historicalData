@@ -7,19 +7,18 @@
     tools:context=".ui.gallery.GalleryFragment"
     android:background="#FFFFFF">
 
-
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="580dp"
+        android:background="@color/primary_light"
+        android:paddingBottom="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:paddingBottom="30dp"
-        android:background="@color/primary_light">
+        android:elevation="10dp">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputType"
@@ -55,10 +54,10 @@
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:orientation="horizontal"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inputType"
-            android:visibility="visible">
+            app:layout_constraintTop_toBottomOf="@+id/inputType">
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -69,52 +68,34 @@
                 app:startIconDrawable="@drawable/ic_calendar">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="150dp"
                     android:id="@+id/start_input"
+                    android:layout_width="280dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="5dp"
-                    android:hint="start"
+                    android:hint="Date Range"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="4dp"
-                android:fontFamily="@font/poppins_regular"
-                android:padding="5dp"
-                android:text="s/d" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:padding="1dp"
-                app:startIconDrawable="@drawable/ic_calendar"
-                android:inputType="none">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/end_input"
-                    android:layout_width="150dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="5dp"
-                    android:hint="end"
-                    android:textSize="14sp"
-                    android:inputType="none"/>
-            </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-
-
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/TimeGranularityRecyclerView"
+        android:layout_width="409dp"
+        android:layout_height="558dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:background="#EAE9E9"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

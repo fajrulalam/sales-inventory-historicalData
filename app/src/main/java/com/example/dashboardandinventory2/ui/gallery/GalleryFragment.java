@@ -19,18 +19,30 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dashboardandinventory2.R;
 import com.example.dashboardandinventory2.databinding.FragmentGalleryBinding;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
+
 
 public class GalleryFragment extends Fragment {
 
@@ -38,6 +50,14 @@ public class GalleryFragment extends Fragment {
     private FragmentGalleryBinding binding;
     private AutoCompleteTextView autoCompleteTextView;
     private LinearLayout start_end_layout;
+
+    RecyclerView recyclerView;
+    FirebaseFirestore fs;
+    RecyclerAdapater recyclerAdapter;
+    ArrayList<String> itemTitleList;
+    ArrayList<String> customerNoList;
+    ArrayList<String> revenueList;
+    RecycleAdapter recycleAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,7 +76,23 @@ public class GalleryFragment extends Fragment {
         autoCompleteTextView.setInputType(View.AUTOFILL_TYPE_NONE);
 
         binding.startInput.setInputType(View.AUTOFILL_TYPE_NONE);
-        binding.endInput.setInputType(View.AUTOFILL_TYPE_NONE);
+        fs = FirebaseFirestore.getInstance();
+
+        itemTitleList = new ArrayList<>();
+        customerNoList = new ArrayList<>();
+        revenueList = new ArrayList<>();
+
+        itemTitleList.add("Test Date");
+        customerNoList.add("99");
+        revenueList.add("10000");
+
+
+        recyclerView = root.findViewById(R.id.TimeGranularityRecyclerView);
+        recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+        recyclerView.setAdapter(recycleAdapter);
+
+
+
 
         long today = MaterialDatePicker.todayInUtcMilliseconds();
         long month = MaterialDatePicker.thisMonthInUtcMilliseconds();
@@ -68,6 +104,10 @@ public class GalleryFragment extends Fragment {
         MaterialDatePicker datePicker_end = MaterialDatePicker.Builder.datePicker()
                 .setSelection(today)
                 .setTitleText("Select End Date").build();
+
+        MaterialDatePicker dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
+                .setSelection(new Pair<>(month, today))
+                .setTitleText("Select Date Range Date").build();
 
 
 
@@ -83,6 +123,43 @@ public class GalleryFragment extends Fragment {
                     case "Daily Transaction":
                         start_end_layout.setVisibility(View.VISIBLE);
                         Toast.makeText(getContext(), "Daily Transactions", Toast.LENGTH_SHORT).show();
+                        fs.collection("DailyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                if (error !=null) {
+                                    Log.e("error!", "onEvent", error);
+                                    return;
+                                }
+
+                                if (value != null){
+                                    Log.i("Checkpoint", "Value is detected" );
+                                    List<DocumentSnapshot> snapshotList = value.getDocuments();
+                                    for (DocumentSnapshot snapshot : snapshotList) {
+                                        Map<String, Object> map = snapshot.getData();
+                                        Object date_obj = map.get("timestamp");
+                                        String date_str = (String.valueOf(date_obj));
+                                        String date_str_real = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                                        Object customerNo = map.get("customerNumber");
+                                        String customerNo_str = (String.valueOf(customerNo));
+                                        Object revenue = map.get("total");
+                                        String revenue_str = (String.valueOf(revenue));
+
+//
+                                        itemTitleList.add(date_str_real);
+                                        customerNoList.add(customerNo_str);
+                                        revenueList.add(revenue_str);
+
+
+
+                                    }
+                                    Log.i("Title List", ""+itemTitleList);
+//                                    Log.i("Customer List", ""+customerNoList);
+//                                    Log.i("Revemue List", ""+revenueList);
+//                                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+//                                    recyclerView.setAdapter(recycleAdapter);
+                                }
+                            }
+                        });
                         break;
 
                     case "Monthly Transaction":
@@ -101,17 +178,27 @@ public class GalleryFragment extends Fragment {
         binding.startInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                datePicker_start.show(getChildFragmentManager(), "materal_dateRange");
-                datePicker_start.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+
+                dateRangePicker.show(getChildFragmentManager(), "dateRangePicker");
+                dateRangePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                     @Override
                     public void onPositiveButtonClick(Object selection) {
-                        Toast.makeText(getContext(), datePicker_start.getHeaderText(), Toast.LENGTH_SHORT).show();
-                        binding.startInput.setText(datePicker_start.getHeaderText());
-                        datePicker_start.dismiss();
+                        Toast.makeText(getContext(), dateRangePicker.getHeaderText().replace("—", "2022").replace("-", "2022"), Toast.LENGTH_SHORT).show();
 
-                        binding.endInput.requestFocus();
                     }
                 });
+
+//                datePicker_start.show(getChildFragmentManager(), "materal_dateRange");
+//                datePicker_start.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+//                    @Override
+//                    public void onPositiveButtonClick(Object selection) {
+//                        Toast.makeText(getContext(), datePicker_start.getHeaderText(), Toast.LENGTH_SHORT).show();
+//                        binding.startInput.setText(datePicker_start.getHeaderText());
+//                        datePicker_start.dismiss();
+//
+//                        binding.endInput.requestFocus();
+//                    }
+//                });
             }
         });
 
@@ -119,17 +206,22 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onFocusChange(View view, boolean b) {
                 if (b == true) {
-                    datePicker_start.show(getChildFragmentManager(), "materal_dateRange");
-                    datePicker_start.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+
+                    dateRangePicker.show(getChildFragmentManager(), "dateRangePicker");
+                    dateRangePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                         @Override
                         public void onPositiveButtonClick(Object selection) {
-                            Toast.makeText(getContext(), datePicker_start.getHeaderText(), Toast.LENGTH_SHORT).show();
-                            binding.startInput.setText(datePicker_start.getHeaderText());
-                            datePicker_start.dismiss();
+                            binding.startInput.setText(dateRangePicker.getHeaderText());
+                            String[] dateRange = dateRangePicker.getHeaderText().split("–");
+                            String dateRange_start = dateRange[0] + getYear();
+                            String dateRange_end =  dateRange[1] + " " + getYear();
+                            Log.i("Start", dateRange_start);
+                            Log.i("End", dateRange_end);
 
-                            binding.endInput.requestFocus();
                         }
                     });
+
+//
                 }
 
             }
@@ -137,75 +229,7 @@ public class GalleryFragment extends Fragment {
 
 
 
-        //End Date Listner
-        binding.endInput.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                datePicker_end.show(getChildFragmentManager(), "date_end");
-                datePicker_end.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
-                    @Override
-                    public void onPositiveButtonClick(Object selection) {
-                        Log.i("Checkpoint", "Before the if statement" );
-                        binding.endInput.setText(datePicker_end.getHeaderText());
-                        if (!binding.startInput.getText().toString().matches("")) {
-                            Log.i("Checkpoint", "In the if statement" );
-                            String str_startDate = binding.startInput.getText().toString();
-                            String str_endDate = binding.endInput.getText().toString();
-                            DateFormat formatter = new SimpleDateFormat();
-                            try {
-                                java.util.Date startDate =   formatter.parse(str_startDate);
-                                java.util.Date endDate = formatter.parse(str_endDate);
-                                Log.i("Start date", "" + startDate.getTime());
-                                Log.i("Start date", "" + endDate.getTime());
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            Log.i("Checkpoint", "If statement rejected" );
 
-                        }
-                    }
-                });
-
-            }
-        });
-        binding.endInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (b == true) {
-                    datePicker_end.show(getChildFragmentManager(), "date_end");
-                    datePicker_end.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
-                        @Override
-                        public void onPositiveButtonClick(Object selection) {
-                            Log.i("Checkpoint", "Before the if statement" );
-                            binding.endInput.setText(datePicker_end.getHeaderText());
-                            if (!binding.startInput.getText().toString().matches("")) {
-                                Log.i("Checkpoint", "In the if statement" );
-                                String str_startDate = binding.startInput.getText().toString();
-                                String str_endDate = binding.endInput.getText().toString();
-                                SimpleDateFormat formatter = new SimpleDateFormat("MMM dd,yyyy");
-                                try {
-                                    java.util.Date start_date = formatter.parse(str_startDate);
-                                    Date end_date = formatter.parse(str_endDate);
-//                                    java.util.Date startDate =   formatter.parse(str_startDate);
-//                                    java.util.Date endDate = formatter.parse(str_endDate);
-                                    Log.i("Start date", "" + start_date.getTime());
-                                    Log.i("End date", "" + end_date.getTime());
-
-
-
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
-                                Log.i("Checkpoint", "If statement rejected" );
-
-                            }
-                        }
-                    });
-                }
-            }
-        });
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+7"));
         calendar.clear();
@@ -230,6 +254,15 @@ public class GalleryFragment extends Fragment {
 //        });
         return root;
     }
+
+    public String getYear() {
+        Long datetime = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(datetime);
+        String date_full = (String) String.valueOf(timestamp);
+        String year = date_full.substring(0, 4);
+        return year;
+    }
+
 
     @Override
     public void onDestroyView() {
