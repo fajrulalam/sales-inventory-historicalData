@@ -5,7 +5,7 @@
     android:layout_height="70dp"
     android:padding="10dp"
     android:orientation="horizontal"
-    android:layout_marginBottom="3dp"
+    android:layout_marginBottom="1.5dp"
     android:background="@color/white">
 
     <TextView
@@ -20,28 +20,28 @@
         android:textSize="16sp" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:orientation="vertical"
+        android:layout_marginRight="20dp"
         android:layout_centerVertical="true"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/customerNoTextview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
             android:text="61"
-            android:textSize="14sp"
-            android:fontFamily="@font/poppins_regular"></TextView>
+            android:textSize="14sp"></TextView>
 
         <TextView
             android:id="@+id/revenueTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Revenue"
             android:fontFamily="@font/poppins_bold"
-            android:textColor="#2E7D32"/>
+            android:text="Rp1.000.000"
+            android:textColor="#2E7D32" />
 
     </LinearLayout>
 

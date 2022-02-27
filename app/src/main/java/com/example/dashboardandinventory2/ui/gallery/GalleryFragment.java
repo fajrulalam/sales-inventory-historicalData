@@ -1,5 +1,6 @@
 package com.example.dashboardandinventory2.ui.gallery;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -15,8 +16,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,12 +39,18 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 
 public class GalleryFragment extends Fragment {
@@ -82,9 +91,9 @@ public class GalleryFragment extends Fragment {
         customerNoList = new ArrayList<>();
         revenueList = new ArrayList<>();
 
-        itemTitleList.add("Test Date");
-        customerNoList.add("99");
-        revenueList.add("10000");
+//        itemTitleList.add("Test Date");
+//        customerNoList.add("99");
+//        revenueList.add("10000");
 
 
         recyclerView = root.findViewById(R.id.TimeGranularityRecyclerView);
@@ -124,8 +133,11 @@ public class GalleryFragment extends Fragment {
                         start_end_layout.setVisibility(View.VISIBLE);
                         Toast.makeText(getContext(), "Daily Transactions", Toast.LENGTH_SHORT).show();
                         fs.collection("DailyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
                             @Override
                             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
                                 if (error !=null) {
                                     Log.e("error!", "onEvent", error);
                                     return;
@@ -133,30 +145,39 @@ public class GalleryFragment extends Fragment {
 
                                 if (value != null){
                                     Log.i("Checkpoint", "Value is detected" );
+                                    itemTitleList.clear();
+                                    customerNoList.clear();
+                                    revenueList.clear();
                                     List<DocumentSnapshot> snapshotList = value.getDocuments();
                                     for (DocumentSnapshot snapshot : snapshotList) {
                                         Map<String, Object> map = snapshot.getData();
                                         Object date_obj = map.get("timestamp");
                                         String date_str = (String.valueOf(date_obj));
-                                        String date_str_real = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                                        Long epoch_long = Long.parseLong(date_str_epoch);
+                                        ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
+                                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
                                         Object customerNo = map.get("customerNumber");
                                         String customerNo_str = (String.valueOf(customerNo));
                                         Object revenue = map.get("total");
+                                        revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
+
                                         String revenue_str = (String.valueOf(revenue));
 
 //
-                                        itemTitleList.add(date_str_real);
+                                        itemTitleList.add(dateTime_formatted);
                                         customerNoList.add(customerNo_str);
                                         revenueList.add(revenue_str);
 
 
 
                                     }
-                                    Log.i("Title List", ""+itemTitleList);
+//                                    Log.i("Title List", ""+itemTitleList);
 //                                    Log.i("Customer List", ""+customerNoList);
 //                                    Log.i("Revemue List", ""+revenueList);
-//                                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
-//                                    recyclerView.setAdapter(recycleAdapter);
+                                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                                    recyclerView.setAdapter(recycleAdapter);
+
                                 }
                             }
                         });
@@ -179,26 +200,126 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                dateRangePicker.show(getChildFragmentManager(), "dateRangePicker");
+                if(dateRangePicker.isAdded()) {
+                    return;
+                }
+
+
+                FragmentManager fm = getFragmentManager();
+                Fragment oldFragment = fm.findFragmentByTag("dateRangePicker");
+                if (oldFragment != null) {
+                    fm.beginTransaction().remove(oldFragment).commit();
+                }
+
+                dateRangePicker.show(getActivity().getSupportFragmentManager(), "dateRangePicker");
                 dateRangePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                     @Override
                     public void onPositiveButtonClick(Object selection) {
-                        Toast.makeText(getContext(), dateRangePicker.getHeaderText().replace("—", "2022").replace("-", "2022"), Toast.LENGTH_SHORT).show();
+                        binding.startInput.setText(dateRangePicker.getHeaderText());
+
+                        Object selection_obj =  selection;
+                        String selection_str = selection_obj.toString();
+                        Log.i("OBJ SELECTION", selection_str);
+
+                        String[] selections = selection_str.substring(selection_str.indexOf("{") +1, selection_str.indexOf("}")).split(" ");
+
+                        String dateRange_start = selections[0];
+                        String dateRange_end = selections[1];
+
+                        long dateRange_start_long = Long.parseLong(dateRange_start);
+                        long dateRange_end_long = Long.parseLong(dateRange_end);
+
+
+
+
+//                            String dateRange_end =  dateRange[1] + " " + getYear();
+
+
+
+//                            SimpleDateFormat start_end_formatter = new SimpleDateFormat("dd MMM yyyy");
+
+
+                        long epoch_start_sec = TimeUnit.MILLISECONDS.toSeconds(dateRange_start_long) ;
+                        long epoch_end_sec = TimeUnit.MILLISECONDS.toSeconds(dateRange_end_long) + 86400;
+
+                        Log.i("Epoch Start", ""+ epoch_start_sec);
+                        Log.i("Epoch End", ""+ epoch_end_sec);
+
+                        fs.collection("DailyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                            @RequiresApi(api = Build.VERSION_CODES.O)
+                            @Override
+                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+                                if (error !=null) {
+                                    Log.e("error!", "onEvent", error);
+                                    return;
+                                }
+
+                                if (value != null){
+                                    Log.i("Checkpoint", "Value is detected" );
+                                    itemTitleList.clear();
+                                    customerNoList.clear();
+                                    revenueList.clear();
+                                    List<DocumentSnapshot> snapshotList = value.getDocuments();
+                                    for (DocumentSnapshot snapshot : snapshotList) {
+                                        Map<String, Object> map = snapshot.getData();
+                                        Object date_obj = map.get("timestamp");
+                                        String date_str = (String.valueOf(date_obj));
+                                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                                        Long epoch_long = Long.parseLong(date_str_epoch);
+
+                                        Log.i("Epoch Long", ""+ epoch_long);
+
+
+                                        if (epoch_long >= epoch_start_sec && epoch_long <= epoch_end_sec) {
+
+                                            ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")));
+                                            String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+                                            Object customerNo = map.get("customerNumber");
+                                            String customerNo_str = (String.valueOf(customerNo));
+                                            Object revenue = map.get("total");
+                                            revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
+
+                                            String revenue_str = (String.valueOf(revenue));
+
+//
+                                            itemTitleList.add(dateTime_formatted);
+                                            customerNoList.add(customerNo_str);
+                                            revenueList.add(revenue_str);
+                                        }
+                                        recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                                        recyclerView.setAdapter(recycleAdapter);
+                                        dateRangePicker.dismiss();
+
+
+
+
+
+
+                                    }
+//                                    Log.i("Title List", ""+itemTitleList);
+//                                    Log.i("Customer List", ""+customerNoList);
+//                                    Log.i("Revemue List", ""+revenueList);
+                                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                                    recyclerView.setAdapter(recycleAdapter);
+                                    dateRangePicker.dismiss();
+
+                                }
+                            }
+                        });
+                        getActivity().getFragmentManager().popBackStack();
+
+
+
+
+                        Log.i("Start", dateRange_start);
+                        Log.i("End", dateRange_end);
 
                     }
                 });
 
-//                datePicker_start.show(getChildFragmentManager(), "materal_dateRange");
-//                datePicker_start.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
-//                    @Override
-//                    public void onPositiveButtonClick(Object selection) {
-//                        Toast.makeText(getContext(), datePicker_start.getHeaderText(), Toast.LENGTH_SHORT).show();
-//                        binding.startInput.setText(datePicker_start.getHeaderText());
-//                        datePicker_start.dismiss();
 //
-//                        binding.endInput.requestFocus();
-//                    }
-//                });
             }
         });
 
@@ -207,14 +328,107 @@ public class GalleryFragment extends Fragment {
             public void onFocusChange(View view, boolean b) {
                 if (b == true) {
 
-                    dateRangePicker.show(getChildFragmentManager(), "dateRangePicker");
+                    if(dateRangePicker.isAdded()) {
+                        return;
+                    }
+
+
+                    FragmentManager fm = getFragmentManager();
+                    Fragment oldFragment = fm.findFragmentByTag("dateRangePicker");
+                    if (oldFragment != null) {
+                        fm.beginTransaction().remove(oldFragment).commit();
+                    }
+
+                    dateRangePicker.show(getActivity().getSupportFragmentManager(), "dateRangePicker");
                     dateRangePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                         @Override
                         public void onPositiveButtonClick(Object selection) {
                             binding.startInput.setText(dateRangePicker.getHeaderText());
-                            String[] dateRange = dateRangePicker.getHeaderText().split("–");
-                            String dateRange_start = dateRange[0] + getYear();
-                            String dateRange_end =  dateRange[1] + " " + getYear();
+
+                            Object selection_obj =  selection;
+                            String selection_str = selection_obj.toString();
+                            Log.i("OBJ SELECTION", selection_str);
+
+                            String[] selections = selection_str.substring(selection_str.indexOf("{") +1, selection_str.indexOf("}")).split(" ");
+
+                            String dateRange_start = selections[0];
+                            String dateRange_end = selections[1];
+
+                            long epoch_start_sec = TimeUnit.MILLISECONDS.toSeconds(Long.parseLong(dateRange_start));
+                            long epoch_end_sec = TimeUnit.MILLISECONDS.toSeconds(Long.parseLong(dateRange_end)) + 86400;
+
+
+//                                long epoch_start_sec = TimeUnit.MILLISECONDS.toSeconds(dateRange_start_long) ;
+//                                long epoch_end_sec = TimeUnit.MILLISECONDS.toSeconds(dateRange_end_long) + 86400;
+
+                                Log.i("Epoch Start", ""+ epoch_start_sec);
+                                Log.i("Epoch End", ""+ epoch_end_sec);
+
+                                fs.collection("DailyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                    @RequiresApi(api = Build.VERSION_CODES.O)
+                                    @Override
+                                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+                                        if (error !=null) {
+                                            Log.e("error!", "onEvent", error);
+                                            return;
+                                        }
+
+                                        if (value != null){
+                                            itemTitleList.clear();
+                                            customerNoList.clear();
+                                            revenueList.clear();
+                                            List<DocumentSnapshot> snapshotList = value.getDocuments();
+                                            for (DocumentSnapshot snapshot : snapshotList) {
+                                                Map<String, Object> map = snapshot.getData();
+                                                Object date_obj = map.get("timestamp");
+                                                String date_str = (String.valueOf(date_obj));
+                                                String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                                                Long epoch_long = Long.parseLong(date_str_epoch);
+
+                                                Log.i("Epoch Long", ""+ epoch_long);
+
+
+                                                if (epoch_long >= epoch_start_sec && epoch_long <= epoch_end_sec) {
+
+                                                    ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")));
+                                                    String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+                                                    Object customerNo = map.get("customerNumber");
+                                                    String customerNo_str = (String.valueOf(customerNo));
+                                                    Object revenue = map.get("total");
+                                                    revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
+
+                                                    String revenue_str = (String.valueOf(revenue));
+
+//
+                                                    itemTitleList.add(dateTime_formatted);
+                                                    customerNoList.add(customerNo_str);
+                                                    revenueList.add(revenue_str);
+                                                }
+                                                recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                                                recyclerView.setAdapter(recycleAdapter);
+                                                dateRangePicker.dismiss();
+
+
+
+
+
+
+                                            }
+
+                                            recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                                            recyclerView.setAdapter(recycleAdapter);
+                                            dateRangePicker.dismiss();
+
+                                        }
+                                    }
+                                });
+                                getActivity().getFragmentManager().popBackStack();
+
+
+
+
                             Log.i("Start", dateRange_start);
                             Log.i("End", dateRange_end);
 
