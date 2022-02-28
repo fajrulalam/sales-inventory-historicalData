@@ -2,22 +2,37 @@ package com.example.dashboardandinventory2;
 
 import android.app.Dialog;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.dashboardandinventory2.ui.gallery.RecycleAdapter_sales;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -42,10 +57,15 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
     private AppBarLayout appBarLayout;
     private LinearLayout linearLayout;
     private TextView appBarLayoutTextView;
+    private ArrayList<String> itemTitle;
+    private  ArrayList<String> noOfSales;
+    private RecyclerView recyclerView_bottomSheet;
+    private FirebaseFirestore fs;
 
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -56,6 +76,8 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
         Bundle bundle = this.getArguments();
         String date = bundle.getString("date");
 
+//        Date dateformatter =
+
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) view.getParent());
         bottomSheetBehavior.setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
 
@@ -64,7 +86,93 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
         linearLayout = view.findViewById(R.id.linearLayout);
         hideView(appBarLayout);
 
-        appBarLayoutTextView.setText(date);
+
+
+        itemTitle = new ArrayList<>();
+        noOfSales = new ArrayList<>();
+        recyclerView_bottomSheet = view.findViewById(R.id.RecycleView_salesBottomSheet);
+        RecycleAdapter_sales recycleAdapter_sales = new RecycleAdapter_sales(itemTitle, noOfSales);
+        recyclerView_bottomSheet.setAdapter(recycleAdapter_sales);
+
+        String document = "";
+        if (date.length() == 4) {
+            document = date;
+        } else {
+            String[] date_split = date.split(" ");
+            if (date_split.length == 2) {
+                SimpleDateFormat formatter2 = new SimpleDateFormat("MMMM yyyy");
+                try {
+                    Date month = formatter2.parse(date);
+                    long month_epoch = month.getTime();
+                    Date month_date_Date = new Date(month_epoch);
+                    String dateTime_formatted = new SimpleDateFormat("yyyy-MM").format(month_date_Date);
+                    document = dateTime_formatted;
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
+
+
+            } else {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+                try {
+                    Date date1 = formatter.parse(date);
+                    long month_epoch = date1.getTime();
+                    Date month_date_Date = new Date(month_epoch);
+                    String dateTime_formatted = new SimpleDateFormat("yyyy-MM-dd").format(month_date_Date);
+                    document = dateTime_formatted;
+                } catch (ParseException parseException) {
+                    parseException.printStackTrace();
+                }
+
+
+            }
+        }
+//        } else if (date.length() == 8 ) {
+//            SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy");
+//            try {
+//                Date month = formatter.parse(date);
+//                long month_epoch = month.getTime();
+//                ZonedDateTime dateTime = Instant.ofEpochSecond(month_epoch).atZone((ZoneId.of("Asia/Jakarta")));
+//                String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("yyyy-mm"));
+//                document = dateTime_formatted;
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//
+//        } else if (date.length() > 8) {
+//            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+//            SimpleDateFormat formatter2 = new SimpleDateFormat("MMMM yyyy");
+//
+//            Date month = null;
+//            try {
+//                month = formatter.parse(date);
+//                long month_epoch = month.getTime();
+//                Date month_date_Date = new Date(month_epoch);
+//                String dateTime_formatted = new SimpleDateFormat("yyyy-MM").format(month_date_Date);
+//                document = dateTime_formatted;
+//
+//            } catch (ParseException e) {
+//                try {
+//                    month = formatter2.parse(date);
+//                    long month_epoch = month.getTime();
+//                    Date month_date_Date = new Date(month_epoch);
+//                    String dateTime_formatted = new SimpleDateFormat("yyyy-MM").format(month_date_Date);
+//                    document = dateTime_formatted;
+//                } catch (ParseException parseException) {
+//                    parseException.printStackTrace();
+//                }
+//
+//            }
+//
+//
+//        }
+
+        appBarLayoutTextView.setText(document);
+
+
+//       fs.collection()
+
+
 
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override

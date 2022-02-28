@@ -2,17 +2,14 @@ package com.example.dashboardandinventory2.ui.gallery;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,14 +18,12 @@ import androidx.annotation.RequiresApi;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dashboardandinventory2.FragmentBottomSheetFull;
 import com.example.dashboardandinventory2.R;
 import com.example.dashboardandinventory2.databinding.FragmentGalleryBinding;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -38,19 +33,14 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -478,8 +468,11 @@ public class GalleryFragment extends Fragment {
                                             customerNoList.clear();
                                             revenueList.clear();
                                             List<DocumentSnapshot> snapshotList = value.getDocuments();
+                                            List<String> listEntry = new ArrayList<>();
+                                            List<Object> listValue = new ArrayList<>();
                                             for (DocumentSnapshot snapshot : snapshotList) {
                                                 Map<String, Object> map = snapshot.getData();
+
                                                 Object date_obj = map.get("timestamp");
                                                 String date_str = (String.valueOf(date_obj));
                                                 String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
@@ -489,6 +482,28 @@ public class GalleryFragment extends Fragment {
 
 
                                                 if (epoch_long >= epoch_start_sec && epoch_long <= epoch_end_sec) {
+
+                                                    for(Map.Entry<String,Object> entry : map.entrySet()) {
+
+                                                        if (listEntry.contains("date") || listEntry.contains("year") || listEntry.contains("month") || listEntry.contains("customerNumber") || listEntry.contains("timestamp") || listEntry.contains("total")) {
+                                                            listEntry.removeIf(s -> s.contains("date"));
+                                                            listEntry.removeIf(s -> s.contains("year"));
+                                                            listEntry.removeIf(s -> s.contains("month"));
+                                                            listEntry.removeIf(s -> s.contains("customerNumber"));
+                                                            listEntry.removeIf(s -> s.contains("timestamp"));
+                                                            listEntry.removeIf(s -> s.contains("total"));
+                                                            listValue.remove(listValue.size()-1);
+                                                        } else {
+                                                            listEntry.add(entry.getKey());
+                                                            listValue.add(entry.getValue());
+                                                        }
+
+
+                                                    }
+
+
+                                                    Log.i("EXPERIMENT Entry", listEntry.toString() );
+                                                    Log.i("EXPERIMENT Value", listValue.toString() );
 
                                                     ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")));
                                                     String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
