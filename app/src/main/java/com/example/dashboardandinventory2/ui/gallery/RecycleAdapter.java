@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dashboardandinventory2.FragmentBottomSheetFull;
 import com.example.dashboardandinventory2.R;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
         return timestamp.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder  implements  View.OnClickListener{
         TextView revenueTextview;
         TextView itemTitleTextView;
         TextView customerNoTextView;
@@ -64,6 +65,12 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
             revenueTextview = itemView.findViewById(R.id.revenueTextView);
             itemTitleTextView = itemView.findViewById(R.id.itemTitleTextView);
             customerNoTextView = itemView.findViewById(R.id.customerNoTextview);
+        }
+
+        @Override
+        public void onClick(View view) {
+            FragmentBottomSheetFull bottomSheetFull = new FragmentBottomSheetFull();
+            bottomSheetFull.show(bottomSheetFull.getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
         }
     }
 }

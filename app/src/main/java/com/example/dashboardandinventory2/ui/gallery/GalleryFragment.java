@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -24,6 +25,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dashboardandinventory2.FragmentBottomSheetFull;
 import com.example.dashboardandinventory2.R;
 import com.example.dashboardandinventory2.databinding.FragmentGalleryBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -172,9 +174,7 @@ public class GalleryFragment extends Fragment {
 
 
                                     }
-//                                    Log.i("Title List", ""+itemTitleList);
-//                                    Log.i("Customer List", ""+customerNoList);
-//                                    Log.i("Revemue List", ""+revenueList);
+
                                     recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
                                     recyclerView.setAdapter(recycleAdapter);
 
@@ -539,12 +539,23 @@ public class GalleryFragment extends Fragment {
             }
         });
 
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                FragmentBottomSheetFull bottomSheetFull = new FragmentBottomSheetFull();
+                bottomSheetFull.show(getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
+            }
+        });
+
 
 
 
 
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC+7"));
         calendar.clear();
+
+
+
 
 
 
