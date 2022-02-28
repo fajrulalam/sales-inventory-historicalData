@@ -54,7 +54,7 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
         return timestamp.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder  implements  View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder{
         TextView revenueTextview;
         TextView itemTitleTextView;
         TextView customerNoTextView;
@@ -67,10 +67,6 @@ public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.ViewHold
             customerNoTextView = itemView.findViewById(R.id.customerNoTextview);
         }
 
-        @Override
-        public void onClick(View view) {
-            FragmentBottomSheetFull bottomSheetFull = new FragmentBottomSheetFull();
-            bottomSheetFull.show(bottomSheetFull.getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
-        }
+
     }
 }

@@ -542,7 +542,14 @@ public class GalleryFragment extends Fragment {
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                String date = itemTitleList.get(position);
+                Bundle bundle = new Bundle();
+                bundle.putString("date", date);
+
+//                Toast.makeText(getContext(), date, Toast.LENGTH_SHORT).show();
+
                 FragmentBottomSheetFull bottomSheetFull = new FragmentBottomSheetFull();
+                bottomSheetFull.setArguments(bundle);
                 bottomSheetFull.show(getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
             }
         });

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -40,33 +41,8 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
 
     private AppBarLayout appBarLayout;
     private LinearLayout linearLayout;
+    private TextView appBarLayoutTextView;
 
-//    /**
-//     * Use this factory method to create a new instance of
-//     * this fragment using the provided parameters.
-//     *
-//     * @param param1 Parameter 1.
-//     * @param param2 Parameter 2.
-//     * @return A new instance of fragment FragmentBottomSheetFull.
-//     */
-    // TODO: Rename and change types and number of parameters
-//    public static FragmentBottomSheetFull newInstance(String param1, String param2) {
-//        FragmentBottomSheetFull fragment = new FragmentBottomSheetFull();
-//        Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
-//        fragment.setArguments(args);
-//        return fragment;
-//    }
-//
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
-//    }
 
 
 
@@ -77,12 +53,18 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
         final View view = View.inflate(getContext(), R.layout.fragment_bottom_sheet_full, null);
         dialog.setContentView(view);
 
+        Bundle bundle = this.getArguments();
+        String date = bundle.getString("date");
+
         BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from((View) view.getParent());
         bottomSheetBehavior.setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
 
+        appBarLayoutTextView = view.findViewById(R.id.appBarLayoutTextView);
         appBarLayout = view.findViewById(R.id.appBarLayout);
         linearLayout = view.findViewById(R.id.linearLayout);
         hideView(appBarLayout);
+
+        appBarLayoutTextView.setText(date);
 
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
