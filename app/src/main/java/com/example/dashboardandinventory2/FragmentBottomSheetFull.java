@@ -18,11 +18,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.dashboardandinventory2.ui.gallery.RecycleAdapter;
 import com.example.dashboardandinventory2.ui.gallery.RecycleAdapter_sales;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
@@ -33,6 +36,8 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
+import java.util.SortedMap;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -93,6 +98,7 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
         recyclerView_bottomSheet = view.findViewById(R.id.RecycleView_salesBottomSheet);
         RecycleAdapter_sales recycleAdapter_sales = new RecycleAdapter_sales(itemTitle, noOfSales);
         recyclerView_bottomSheet.setAdapter(recycleAdapter_sales);
+        fs = FirebaseFirestore.getInstance();
 
         String document = "";
         if (date.length() == 4) {
@@ -127,47 +133,38 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
 
             }
         }
-//        } else if (date.length() == 8 ) {
-//            SimpleDateFormat formatter = new SimpleDateFormat("MMMM yyyy");
-//            try {
-//                Date month = formatter.parse(date);
-//                long month_epoch = month.getTime();
-//                ZonedDateTime dateTime = Instant.ofEpochSecond(month_epoch).atZone((ZoneId.of("Asia/Jakarta")));
-//                String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("yyyy-mm"));
-//                document = dateTime_formatted;
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//
-//        } else if (date.length() > 8) {
-//            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-//            SimpleDateFormat formatter2 = new SimpleDateFormat("MMMM yyyy");
-//
-//            Date month = null;
-//            try {
-//                month = formatter.parse(date);
-//                long month_epoch = month.getTime();
-//                Date month_date_Date = new Date(month_epoch);
-//                String dateTime_formatted = new SimpleDateFormat("yyyy-MM").format(month_date_Date);
-//                document = dateTime_formatted;
-//
-//            } catch (ParseException e) {
-//                try {
-//                    month = formatter2.parse(date);
-//                    long month_epoch = month.getTime();
-//                    Date month_date_Date = new Date(month_epoch);
-//                    String dateTime_formatted = new SimpleDateFormat("yyyy-MM").format(month_date_Date);
-//                    document = dateTime_formatted;
-//                } catch (ParseException parseException) {
-//                    parseException.printStackTrace();
-//                }
-//
-//            }
-//
-//
-//        }
+
 
         appBarLayoutTextView.setText(document);
+
+        fs.collection("DailyTransaction").document(document).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
+//                SortedMap<String, Object> map_sorted
+                for(Map.Entry<String,Object> entry : map.entrySet()) {
+
+                    if (itemTitle.contains("date") || itemTitle.contains("year") || itemTitle.contains("month") || itemTitle.contains("customerNumber") || itemTitle.contains("timestamp") || itemTitle.contains("total")) {
+                        itemTitle.removeIf(s -> s.contains("date"));
+                        itemTitle.removeIf(s -> s.contains("year"));
+                        itemTitle.removeIf(s -> s.contains("month"));
+                        itemTitle.removeIf(s -> s.contains("customerNumber"));
+                        itemTitle.removeIf(s -> s.contains("timestamp"));
+                        itemTitle.removeIf(s -> s.contains("total"));
+                        noOfSales.remove(noOfSales.size()-1);
+                    } else {
+                        itemTitle.add(entry.getKey());
+                        noOfSales.add(entry.getValue().toString());
+                    }
+
+
+                }
+                RecycleAdapter_sales recycleAdapter_sales = new RecycleAdapter_sales(itemTitle, noOfSales);
+                recyclerView_bottomSheet.setAdapter(recycleAdapter_sales);
+
+
+            }
+        });
 
 
 //       fs.collection()
