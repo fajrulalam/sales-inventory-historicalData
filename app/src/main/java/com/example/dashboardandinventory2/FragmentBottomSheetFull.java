@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.SortedMap;
+import java.util.TreeMap;
 
 ///**
 // * A simple {@link Fragment} subclass.
@@ -62,9 +63,13 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
     private AppBarLayout appBarLayout;
     private LinearLayout linearLayout;
     private TextView appBarLayoutTextView;
+    private ArrayList<String> itemTitleMinuman;
+    private ArrayList<String> itemTitleMakanan;
     private ArrayList<String> itemTitle;
-    private  ArrayList<String> noOfSales;
-    private RecyclerView recyclerView_bottomSheet;
+    private  ArrayList<String> noOfSales_makanan;
+    private  ArrayList<String> noOfSales_minuman;
+    private RecyclerView recyclerView_bottomSheetMakanan;
+    private RecyclerView recyclerView_bottomSheetMinuman;
     private FirebaseFirestore fs;
 
 
@@ -93,11 +98,15 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
 
 
 
+        itemTitleMinuman = new ArrayList<>();
+        itemTitleMakanan = new ArrayList<>();
         itemTitle = new ArrayList<>();
-        noOfSales = new ArrayList<>();
-        recyclerView_bottomSheet = view.findViewById(R.id.RecycleView_salesBottomSheet);
-        RecycleAdapter_sales recycleAdapter_sales = new RecycleAdapter_sales(itemTitle, noOfSales);
-        recyclerView_bottomSheet.setAdapter(recycleAdapter_sales);
+        noOfSales_makanan = new ArrayList<>();
+        noOfSales_minuman = new ArrayList<>();
+        recyclerView_bottomSheetMakanan = view.findViewById(R.id.RecycleView_salesBottomSheetMakanan);
+        recyclerView_bottomSheetMinuman = view.findViewById(R.id.RecycleView_salesBottomSheetMinuman);
+//        RecycleAdapter_sales recycleAdapter_sales = new RecycleAdapter_sales(itemTitle, noOfSales);
+//        recyclerView_bottomSheet.setAdapter(recycleAdapter_sales);
         fs = FirebaseFirestore.getInstance();
 
         String document = "";
@@ -141,9 +150,9 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
-//                SortedMap<String, Object> map_sorted
-                for(Map.Entry<String,Object> entry : map.entrySet()) {
-
+                SortedMap<String, Object> map_sorted = new TreeMap<>();
+                map_sorted.putAll(map);
+                for(Map.Entry<String,Object> entry : map_sorted.entrySet()) {
                     if (itemTitle.contains("date") || itemTitle.contains("year") || itemTitle.contains("month") || itemTitle.contains("customerNumber") || itemTitle.contains("timestamp") || itemTitle.contains("total")) {
                         itemTitle.removeIf(s -> s.contains("date"));
                         itemTitle.removeIf(s -> s.contains("year"));
@@ -151,16 +160,38 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
                         itemTitle.removeIf(s -> s.contains("customerNumber"));
                         itemTitle.removeIf(s -> s.contains("timestamp"));
                         itemTitle.removeIf(s -> s.contains("total"));
-                        noOfSales.remove(noOfSales.size()-1);
+                        noOfSales_makanan.remove(noOfSales_makanan.size()-1);
                     } else {
-                        itemTitle.add(entry.getKey());
-                        noOfSales.add(entry.getValue().toString());
+                        switch (entry.getKey()){
+                            case "Aqua 600ml":
+                            case "Coca Cola":
+                            case "Es Kopi Durian":
+                            case "Es Teh":
+                            case "Fanta":
+                            case "Floridina":
+                            case "Frestea":
+                            case "Isoplus":
+                            case "Kopi Hitam":
+                            case "Milo":
+                            case "Sprite":
+                            case "Teh Pucuk Harum":
+                                itemTitleMinuman.add(entry.getKey());
+                                noOfSales_minuman.add(entry.getValue().toString());
+                                break;
+                            default:
+                                itemTitle.add(entry.getKey());
+                                noOfSales_makanan.add(entry.getValue().toString());
+                                break;
+                        }
+
                     }
 
 
                 }
-                RecycleAdapter_sales recycleAdapter_sales = new RecycleAdapter_sales(itemTitle, noOfSales);
-                recyclerView_bottomSheet.setAdapter(recycleAdapter_sales);
+                RecycleAdapter_sales recycleAdapter_sales = new RecycleAdapter_sales(itemTitle, noOfSales_makanan);
+                RecycleAdapter_sales recycleAdapter_sales_minuman = new RecycleAdapter_sales(itemTitleMinuman, noOfSales_minuman);
+                recyclerView_bottomSheetMakanan.setAdapter(recycleAdapter_sales);
+                recyclerView_bottomSheetMinuman.setAdapter(recycleAdapter_sales_minuman);
 
 
             }

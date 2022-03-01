@@ -55,10 +55,40 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="16dp">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/RecycleView_salesBottomSheet"
+
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Makanan"
+                android:fontFamily="@font/montserrat_bold"
+                android:padding="10dp"
+                android:textSize="20dp"
+                android:textColor="@color/navy_500"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RecycleView_salesBottomSheetMakanan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EAE9E9"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+                android:layout_marginBottom="30dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Minuman"
+                android:fontFamily="@font/montserrat_bold"
+                android:padding="10dp"
+                android:textColor="@color/navy_500"
+                android:textSize="20dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/RecycleView_salesBottomSheetMinuman"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="#EAE9E9"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
