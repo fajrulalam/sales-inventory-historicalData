@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dashboardandinventory2.FragmentBottomSheetFull;
 import com.example.dashboardandinventory2.R;
 import com.example.dashboardandinventory2.databinding.FragmentGalleryBinding;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -41,7 +43,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TimeZone;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 
@@ -53,12 +57,15 @@ public class GalleryFragment extends Fragment {
     private LinearLayout start_end_layout;
 
     RecyclerView recyclerView;
+    ImageButton filterbutton;
     FirebaseFirestore fs;
     RecyclerAdapater recyclerAdapter;
     ArrayList<String> itemTitleList;
     ArrayList<String> customerNoList;
     ArrayList<String> revenueList;
     RecycleAdapter recycleAdapter;
+    ArrayList<String> itemTitle;
+    ArrayList<String> itemTitleMinuman;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -82,13 +89,17 @@ public class GalleryFragment extends Fragment {
         itemTitleList = new ArrayList<>();
         customerNoList = new ArrayList<>();
         revenueList = new ArrayList<>();
+        itemTitle = new ArrayList<>();
+        itemTitleMinuman = new ArrayList<>();
 
 //        itemTitleList.add("Test Date");
 //        customerNoList.add("99");
 //        revenueList.add("10000");
 
 
+
         recyclerView = root.findViewById(R.id.TimeGranularityRecyclerView);
+        filterbutton = root.findViewById(R.id.filterButton);
         recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
         recyclerView.setAdapter(recycleAdapter);
 
@@ -109,6 +120,36 @@ public class GalleryFragment extends Fragment {
         MaterialDatePicker dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
                 .setSelection(new Pair<>(month, today))
                 .setTitleText("Select Date Range Date").build();
+
+
+
+
+
+        //Filter Button on click listener
+        filterbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+
+            }
+        });
+
+        //Populate FnBList
+        populateFoodBevs();
+
+        //On Click Listener in Filter Button
+        filterbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showFilterDialog();
+            }
+        });
+
+
+
+
+
+
 
 
 
@@ -600,11 +641,71 @@ public class GalleryFragment extends Fragment {
         return root;
     }
 
+    public void populateFoodBevs() {
+        fs.collection("DailyTransaction").document(getDate()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
+                SortedMap<String, Object> map_sorted = new TreeMap<>();
+                map_sorted.putAll(map);
+                for (Map.Entry<String, Object> entry : map_sorted.entrySet()) {
+                    if (itemTitle.contains("date") || itemTitle.contains("year") || itemTitle.contains("month") || itemTitle.contains("customerNumber") || itemTitle.contains("timestamp") || itemTitle.contains("total")) {
+                        itemTitle.removeIf(s -> s.contains("date"));
+                        itemTitle.removeIf(s -> s.contains("year"));
+                        itemTitle.removeIf(s -> s.contains("month"));
+                        itemTitle.removeIf(s -> s.contains("customerNumber"));
+                        itemTitle.removeIf(s -> s.contains("timestamp"));
+                        itemTitle.removeIf(s -> s.contains("total"));
+                    } else {
+                        switch (entry.getKey()) {
+                            case "Aqua 600ml":
+                            case "Coca Cola":
+                            case "Es Kopi Durian":
+                            case "Es Teh":
+                            case "Fanta":
+                            case "Floridina":
+                            case "Frestea":
+                            case "Isoplus":
+                            case "Kopi Hitam":
+                            case "Milo":
+                            case "Sprite":
+                            case "Teh Pucuk Harum":
+                                itemTitleMinuman.add(entry.getKey());
+                                break;
+                            default:
+                                itemTitle.add(entry.getKey());
+                                break;
+                        }
+
+                    }
+
+
+                }
+
+            }
+        });
+    }
+
+    public void showFilterDialog(){
+        Bundle bundle = new Bundle();
+        bundle.putStringArrayList("makananList", itemTitle);
+        bundle.putStringArrayList("minumanList", itemTitleMinuman);
+    }
+
     public String getYear() {
         Long datetime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(datetime);
         String date_full = (String) String.valueOf(timestamp);
         String year = date_full.substring(0, 4);
+        return year;
+    }
+
+    public String getDate() {
+        Long datetime = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(datetime);
+        String date_full = (String) String.valueOf(timestamp);
+        String year = date_full.substring(0, 10);
         return year;
     }
 
