@@ -27,9 +27,9 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="5dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="52dp"
             android:hint="Time Granularity"
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,8 +46,21 @@
                 android:inputType="none"
                 tools:ignore="SpeakableTextPresentCheck" />
 
+
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/inputType"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.833" />
 
         <LinearLayout
             android:id="@+id/start_end_input"
