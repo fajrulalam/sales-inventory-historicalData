@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Filter"
+        android:textSize="20dp"
+        android:padding="15dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Filter"
+        android:textSize="18dp"
+        android:padding="15dp"
+        android:fontFamily="@font/poppins_bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pilihanFilterRecycleViewMakanan"
+        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose Filter"
+        android:textSize="18dp"
+        android:padding="15dp"
+        android:fontFamily="@font/poppins_bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/pilihanFilterRecycleViewMinuman"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+
+
+
+</LinearLayout>

@@ -141,6 +141,7 @@ public class GalleryFragment extends Fragment {
         filterbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 showFilterDialog();
             }
         });
@@ -691,6 +692,11 @@ public class GalleryFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("makananList", itemTitle);
         bundle.putStringArrayList("minumanList", itemTitleMinuman);
+
+
+
+
+
     }
 
     public String getYear() {
