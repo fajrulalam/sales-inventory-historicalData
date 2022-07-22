@@ -528,118 +528,118 @@ public class NavigationDrawerActivity extends AppCompatActivity implements stock
     }
 
     public void querySales(String collection, String document) {
-        fs.collection(collection).document(document).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                if (documentSnapshot.exists()) {
-                    Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
-                    Object totalRev = map.get("total");
-                    Log.i("Total", totalRev.toString());
-                    String totalRev_str = totalRev.toString();
-                    int totalRev_int = Integer.parseInt(totalRev_str);
-                    totalRev_str = String.format("%,d", totalRev_int).replace(',', '.');
-                    nominalPendapatanTextView.setText("Rp " + totalRev_str);
-
-
-                    Object sales1_obj = map.get("Bakso");
-                    String sales1_str = sales1_obj.toString();
-                    baksoSales.setText(sales1_str);
-                    Object sales2_obj = map.get("Kentang G");
-                    String sales2_str = sales2_obj.toString();
-                    kentangSales.setText(sales2_str);
-                    Object sales3_obj = map.get("Mie Ayam");
-                    String sales3_str = sales3_obj.toString();
-                    mieAyamSales.setText(sales3_str);
-                    Object sales4_obj = map.get("NasBung A");
-                    String sales4_str = sales4_obj.toString();
-                    nasbungASales.setText(sales4_str);
-                    Object sales5_obj = map.get("NasBung B");
-                    String sales5_str = sales5_obj.toString();
-                    nasbungBSales.setText(sales5_str); //5
-                    Object sales6_obj = map.get("Nasi Ayam");
-                    String sales6_str = sales6_obj.toString();
-                    nasiAyamSales.setText(sales6_str);
-                    Object sales7_obj = map.get("Nasi Pindang");
-                    String sales7_str = sales7_obj.toString();
-                    nasiPindangSales.setText(sales7_str);
-                    Object sales8_obj = map.get("Nasi Telur");
-                    String sales8_str = sales8_obj.toString();
-                    nasiTelurSales.setText(sales8_str);
-                    Object sales9_obj = map.get("Pisang G");
-                    String sales9_str = sales9_obj.toString();
-                    pisangGorengSales.setText(sales9_str);
-                    Object sales10_obj = map.get("Popmie");
-                    String sales10_str = sales10_obj.toString();
-                    popmieSales.setText(sales10_str); //10
-                    Object sales11_obj = map.get("Sereal");
-                    String sales11_str = sales11_obj.toString();
-                    serealSales.setText(sales11_str);
-                    Object sales12_obj = map.get("Tahu G");
-                    String sales12_str = sales12_obj.toString();
-                    tahuGorengSales.setText(sales12_str);
-                    Object sales13_obj = map.get("Siomay");
-                    String sales13_str = sales13_obj.toString();
-                    siomaySales.setText(sales13_str);
-                    Object sales14_obj = map.get("Sosis Naget");
-                    String sales14_str = sales14_obj.toString();
-                    sosisNagetSales.setText(sales14_str);
-                    Object sales15_obj = map.get("Aqua 600ml");
-                    String sales15_str = sales15_obj.toString();
-                    aquaSales.setText(sales15_str); //15
-                    Object sales16_obj = map.get("Coca-Cola");
-                    String sales16_str = sales16_obj.toString();
-                    cocaColaSales.setText(sales16_str);
-                    Object sales17_obj = map.get("Es Kopi Durian");
-                    String sales17_str = sales17_obj.toString();
-                    esKopiDurianSales.setText(sales17_str);
-                    Object sales18_obj = map.get("Es Teh");
-                    String sales18_str = sales18_obj.toString();
-                    tehGelasSales.setText(sales18_str);
-                    Object sales19_obj = map.get("Fanta");
-                    String sales19_str = sales19_obj.toString();
-                    fantaSales.setText(sales19_str);
-                    Object sales20_obj = map.get("Floridina");
-                    String sales20_str = sales20_obj.toString();
-                    floridinaSales.setText(sales20_str); //20
-                    Object sales21_obj = map.get("Frestea");
-                    String sales21_str = sales21_obj.toString();
-                    fresteaSales.setText(sales21_str);
-                    Object sales22_obj = map.get("Isoplus");
-                    String sales22_str = sales22_obj.toString();
-                    isoplusSales.setText(sales22_str);
-                    Object sales23_obj = map.get("Kopi Hitam");
-                    String sales23_str = sales23_obj.toString();
-                    kopiHitamSales.setText(sales23_str);
-                    Object sales24_obj = map.get("Milo");
-                    String sales24_str = sales24_obj.toString();
-                    miloSales.setText(sales24_str);
-                    Object sales25_obj = map.get("Sprite");
-                    String sales25_str = sales25_obj.toString();
-                    spriteSales.setText(sales25_str);
-                    Object sales26_obj = map.get("Teh Pucuk Harum");
-                    String sales26_str = sales26_obj.toString();
-                    tehPucukHarumSales.setText(sales26_str);
-                    Object sales27_obj = map.get("Teh Hangat");
-                    String sales27_str = sales27_obj.toString();
-                    tehHangatSales.setText(sales27_str);
-                } else {
-                    switch (document.length()) {
-                        case 4 :
-                            Toast.makeText(getApplicationContext(), "Belum ada input untuk tahun ini", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 7:
-                            Toast.makeText(getApplicationContext(), "Belum ada input untuk bulan ini", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 10:
-                            Toast.makeText(getApplicationContext(), "Belum ada input untuk hari ini", Toast.LENGTH_SHORT).show();
-                            break;
-                        default:
-                            Toast.makeText(getApplicationContext(), "Belum ada input data", Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-            }
-        });
+//        fs.collection(collection).document(document).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//            @Override
+//            public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                if (documentSnapshot.exists()) {
+//                    Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
+//                    Object totalRev = map.get("total");
+//                    Log.i("Total", totalRev.toString());
+//                    String totalRev_str = totalRev.toString();
+//                    int totalRev_int = Integer.parseInt(totalRev_str);
+//                    totalRev_str = String.format("%,d", totalRev_int).replace(',', '.');
+//                    nominalPendapatanTextView.setText("Rp " + totalRev_str);
+//
+//
+//                    Object sales1_obj = map.get("Bakso");
+//                    String sales1_str = sales1_obj.toString();
+//                    baksoSales.setText(sales1_str);
+//                    Object sales2_obj = map.get("Kentang G");
+//                    String sales2_str = sales2_obj.toString();
+//                    kentangSales.setText(sales2_str);
+//                    Object sales3_obj = map.get("Mie Ayam");
+//                    String sales3_str = sales3_obj.toString();
+//                    mieAyamSales.setText(sales3_str);
+//                    Object sales4_obj = map.get("NasBung A");
+//                    String sales4_str = sales4_obj.toString();
+//                    nasbungASales.setText(sales4_str);
+//                    Object sales5_obj = map.get("NasBung B");
+//                    String sales5_str = sales5_obj.toString();
+//                    nasbungBSales.setText(sales5_str); //5
+//                    Object sales6_obj = map.get("Nasi Ayam");
+//                    String sales6_str = sales6_obj.toString();
+//                    nasiAyamSales.setText(sales6_str);
+//                    Object sales7_obj = map.get("Nasi Pindang");
+//                    String sales7_str = sales7_obj.toString();
+//                    nasiPindangSales.setText(sales7_str);
+//                    Object sales8_obj = map.get("Nasi Telur");
+//                    String sales8_str = sales8_obj.toString();
+//                    nasiTelurSales.setText(sales8_str);
+//                    Object sales9_obj = map.get("Pisang G");
+//                    String sales9_str = sales9_obj.toString();
+//                    pisangGorengSales.setText(sales9_str);
+//                    Object sales10_obj = map.get("Popmie");
+//                    String sales10_str = sales10_obj.toString();
+//                    popmieSales.setText(sales10_str); //10
+//                    Object sales11_obj = map.get("Sereal");
+//                    String sales11_str = sales11_obj.toString();
+//                    serealSales.setText(sales11_str);
+//                    Object sales12_obj = map.get("Tahu G");
+//                    String sales12_str = sales12_obj.toString();
+//                    tahuGorengSales.setText(sales12_str);
+//                    Object sales13_obj = map.get("Siomay");
+//                    String sales13_str = sales13_obj.toString();
+//                    siomaySales.setText(sales13_str);
+//                    Object sales14_obj = map.get("Sosis Naget");
+//                    String sales14_str = sales14_obj.toString();
+//                    sosisNagetSales.setText(sales14_str);
+//                    Object sales15_obj = map.get("Aqua 600ml");
+//                    String sales15_str = sales15_obj.toString();
+//                    aquaSales.setText(sales15_str); //15
+//                    Object sales16_obj = map.get("Coca-Cola");
+//                    String sales16_str = sales16_obj.toString();
+//                    cocaColaSales.setText(sales16_str);
+//                    Object sales17_obj = map.get("Es Kopi Durian");
+//                    String sales17_str = sales17_obj.toString();
+//                    esKopiDurianSales.setText(sales17_str);
+//                    Object sales18_obj = map.get("Es Teh");
+//                    String sales18_str = sales18_obj.toString();
+//                    tehGelasSales.setText(sales18_str);
+//                    Object sales19_obj = map.get("Fanta");
+//                    String sales19_str = sales19_obj.toString();
+//                    fantaSales.setText(sales19_str);
+//                    Object sales20_obj = map.get("Floridina");
+//                    String sales20_str = sales20_obj.toString();
+//                    floridinaSales.setText(sales20_str); //20
+//                    Object sales21_obj = map.get("Frestea");
+//                    String sales21_str = sales21_obj.toString();
+//                    fresteaSales.setText(sales21_str);
+//                    Object sales22_obj = map.get("Isoplus");
+//                    String sales22_str = sales22_obj.toString();
+//                    isoplusSales.setText(sales22_str);
+//                    Object sales23_obj = map.get("Kopi Hitam");
+//                    String sales23_str = sales23_obj.toString();
+//                    kopiHitamSales.setText(sales23_str);
+//                    Object sales24_obj = map.get("Milo");
+//                    String sales24_str = sales24_obj.toString();
+//                    miloSales.setText(sales24_str);
+//                    Object sales25_obj = map.get("Sprite");
+//                    String sales25_str = sales25_obj.toString();
+//                    spriteSales.setText(sales25_str);
+//                    Object sales26_obj = map.get("Teh Pucuk Harum");
+//                    String sales26_str = sales26_obj.toString();
+//                    tehPucukHarumSales.setText(sales26_str);
+//                    Object sales27_obj = map.get("Teh Hangat");
+//                    String sales27_str = sales27_obj.toString();
+//                    tehHangatSales.setText(sales27_str);
+//                } else {
+//                    switch (document.length()) {
+//                        case 4 :
+//                            Toast.makeText(getApplicationContext(), "Belum ada input untuk tahun ini", Toast.LENGTH_SHORT).show();
+//                            break;
+//                        case 7:
+//                            Toast.makeText(getApplicationContext(), "Belum ada input untuk bulan ini", Toast.LENGTH_SHORT).show();
+//                            break;
+//                        case 10:
+//                            Toast.makeText(getApplicationContext(), "Belum ada input untuk hari ini", Toast.LENGTH_SHORT).show();
+//                            break;
+//                        default:
+//                            Toast.makeText(getApplicationContext(), "Belum ada input data", Toast.LENGTH_SHORT).show();
+//
+//                    }
+//                }
+//            }
+//        });
     }
 
 

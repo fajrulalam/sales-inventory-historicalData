@@ -172,8 +172,10 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
                             case "Frestea":
                             case "Isoplus":
                             case "Kopi Hitam":
-                            case "Milo":
+                            case "Es Milo":
+                            case "Es Dawet Cincau":
                             case "Sprite":
+                            case "Teh Panas":
                             case "Teh Pucuk Harum":
                                 itemTitleMinuman.add(entry.getKey());
                                 noOfSales_minuman.add(entry.getValue().toString());
@@ -251,7 +253,7 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
 
     private int getActionBarSize(){
         final TypedArray typedArray =getContext().getTheme().obtainStyledAttributes(new int[]{
-                R.attr.actionBarSize
+                android.R.attr.actionBarSize
         });
 
         return (int) typedArray.getDimension(0, 0);

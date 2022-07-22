@@ -32,6 +32,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Timestamp;
@@ -166,7 +167,7 @@ public class GalleryFragment extends Fragment {
                     case "Daily Transaction":
                         start_end_layout.setVisibility(View.VISIBLE);
                         Toast.makeText(getContext(), "Daily Transactions", Toast.LENGTH_SHORT).show();
-                        fs.collection("DailyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        fs.collection("DailyTransaction").orderBy("date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
                             @RequiresApi(api = Build.VERSION_CODES.O)
                             @Override
                             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -566,10 +567,6 @@ public class GalleryFragment extends Fragment {
                                                 dateRangePicker.dismiss();
 
 
-
-
-
-
                                             }
 
                                             recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
@@ -722,3 +719,6 @@ public class GalleryFragment extends Fragment {
         binding = null;
     }
 }
+
+
+

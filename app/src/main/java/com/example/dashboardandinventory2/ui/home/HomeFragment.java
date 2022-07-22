@@ -238,7 +238,7 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
         tehHangatSales = root.findViewById(R.id.sales2_13);
         tehHangatStock = root.findViewById(R.id.stock2_13);
 
-        //Minuman Stock On Click listener
+        //Makanan Stock On Click listener
         for (int i =1; i < 15; i++) {
             Resources res = getResources();
             String id = "stock_" + i;
@@ -310,14 +310,14 @@ public class HomeFragment extends Fragment implements stockDialog.UpdateStock{
             }
         });
 
-        updateStock();
-        try {
-            querySales("DailyTransaction", getDate());
-        } catch (NullPointerException nullPointerException) {
-            Toast.makeText(getContext(), "Still No Data Entry today", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "Still No Data Entry today", Toast.LENGTH_SHORT).show();
-        }
+//        updateStock();
+//        try {
+//            querySales("DailyTransaction", getDate());
+//        } catch (NullPointerException nullPointerException) {
+//            Toast.makeText(getContext(), "Still No Data Entry today", Toast.LENGTH_SHORT).show();
+//        } catch (Exception e) {
+//            Toast.makeText(getContext(), "Still No Data Entry today", Toast.LENGTH_SHORT).show();
+//        }
 
 
 
