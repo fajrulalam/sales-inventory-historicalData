@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dashboardandinventory2.FragmentBottomSheetFull;
 import com.example.dashboardandinventory2.R;
 import com.example.dashboardandinventory2.databinding.FragmentGalleryBinding;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -644,42 +645,51 @@ public class GalleryFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+
                 Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
                 SortedMap<String, Object> map_sorted = new TreeMap<>();
-                map_sorted.putAll(map);
-                for (Map.Entry<String, Object> entry : map_sorted.entrySet()) {
-                    if (itemTitle.contains("date") || itemTitle.contains("year") || itemTitle.contains("month") || itemTitle.contains("customerNumber") || itemTitle.contains("timestamp") || itemTitle.contains("total")) {
-                        itemTitle.removeIf(s -> s.contains("date"));
-                        itemTitle.removeIf(s -> s.contains("year"));
-                        itemTitle.removeIf(s -> s.contains("month"));
-                        itemTitle.removeIf(s -> s.contains("customerNumber"));
-                        itemTitle.removeIf(s -> s.contains("timestamp"));
-                        itemTitle.removeIf(s -> s.contains("total"));
-                    } else {
-                        switch (entry.getKey()) {
-                            case "Aqua 600ml":
-                            case "Coca Cola":
-                            case "Es Kopi Durian":
-                            case "Es Teh":
-                            case "Fanta":
-                            case "Floridina":
-                            case "Frestea":
-                            case "Isoplus":
-                            case "Kopi Hitam":
-                            case "Milo":
-                            case "Sprite":
-                            case "Teh Pucuk Harum":
-                                itemTitleMinuman.add(entry.getKey());
-                                break;
-                            default:
-                                itemTitle.add(entry.getKey());
-                                break;
-                        }
+                if(!(map == null)) {
+                    map_sorted.putAll(map);
+                    for (Map.Entry<String, Object> entry : map_sorted.entrySet()) {
+                        if (itemTitle.contains("date") || itemTitle.contains("year") || itemTitle.contains("month") || itemTitle.contains("customerNumber") || itemTitle.contains("timestamp") || itemTitle.contains("total")) {
+                            itemTitle.removeIf(s -> s.contains("date"));
+                            itemTitle.removeIf(s -> s.contains("year"));
+                            itemTitle.removeIf(s -> s.contains("month"));
+                            itemTitle.removeIf(s -> s.contains("customerNumber"));
+                            itemTitle.removeIf(s -> s.contains("timestamp"));
+                            itemTitle.removeIf(s -> s.contains("total"));
+                        } else {
+                            switch (entry.getKey()) {
+                                case "Aqua 600ml":
+                                case "Coca Cola":
+                                case "Es Kopi Durian":
+                                case "Es Teh":
+                                case "Fanta":
+                                case "Floridina":
+                                case "Frestea":
+                                case "Isoplus":
+                                case "Kopi Hitam":
+                                case "Milo":
+                                case "Sprite":
+                                case "Teh Pucuk Harum":
+                                    itemTitleMinuman.add(entry.getKey());
+                                    break;
+                                default:
+                                    itemTitle.add(entry.getKey());
+                                    break;
+                            }
 
+                        }
                     }
+                } else {
+                    Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
+
 
 
                 }
+                dailyTransaction();
+
+
 
             }
         });
@@ -710,6 +720,59 @@ public class GalleryFragment extends Fragment {
         String date_full = (String) String.valueOf(timestamp);
         String year = date_full.substring(0, 10);
         return year;
+    }
+
+    public void dailyTransaction() {
+        // do daily transaction
+        start_end_layout.setVisibility(View.VISIBLE);
+        Toast.makeText(getContext(), "Daily Transactions", Toast.LENGTH_SHORT).show();
+        fs.collection("DailyTransaction").orderBy("date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+                if (error !=null) {
+                    Log.e("error!", "onEvent", error);
+                    return;
+                }
+
+                if (value != null){
+                    Log.i("Checkpoint", "Value is detected" );
+                    itemTitleList.clear();
+                    customerNoList.clear();
+                    revenueList.clear();
+                    List<DocumentSnapshot> snapshotList = value.getDocuments();
+                    for (DocumentSnapshot snapshot : snapshotList) {
+                        Map<String, Object> map = snapshot.getData();
+                        Object date_obj = map.get("timestamp");
+                        String date_str = (String.valueOf(date_obj));
+                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                        Long epoch_long = Long.parseLong(date_str_epoch);
+                        ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
+                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+                        Object customerNo = map.get("customerNumber");
+                        String customerNo_str = (String.valueOf(customerNo));
+                        Object revenue = map.get("total");
+                        revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
+
+                        String revenue_str = (String.valueOf(revenue));
+
+//
+                        itemTitleList.add(dateTime_formatted);
+                        customerNoList.add(customerNo_str);
+                        revenueList.add(revenue_str);
+
+
+
+                    }
+
+                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                    recyclerView.setAdapter(recycleAdapter);
+
+                }
+            }
+        });
     }
 
 

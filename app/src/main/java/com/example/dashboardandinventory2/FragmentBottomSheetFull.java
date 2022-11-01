@@ -152,16 +152,9 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
                 Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
                 SortedMap<String, Object> map_sorted = new TreeMap<>();
                 map_sorted.putAll(map);
+                Log.i("Map sorted", map_sorted.toString());
                 for(Map.Entry<String,Object> entry : map_sorted.entrySet()) {
-                    if (itemTitle.contains("date") || itemTitle.contains("year") || itemTitle.contains("month") || itemTitle.contains("customerNumber") || itemTitle.contains("timestamp") || itemTitle.contains("total")) {
-                        itemTitle.removeIf(s -> s.contains("date"));
-                        itemTitle.removeIf(s -> s.contains("year"));
-                        itemTitle.removeIf(s -> s.contains("month"));
-                        itemTitle.removeIf(s -> s.contains("customerNumber"));
-                        itemTitle.removeIf(s -> s.contains("timestamp"));
-                        itemTitle.removeIf(s -> s.contains("total"));
-                        noOfSales_makanan.remove(noOfSales_makanan.size()-1);
-                    } else {
+
                         switch (entry.getKey()){
                             case "Aqua 600ml":
                             case "Coca Cola":
@@ -182,12 +175,20 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
                                 break;
                             default:
                                 itemTitle.add(entry.getKey());
+                                Log.i("entry", itemTitle.toString());
                                 noOfSales_makanan.add(entry.getValue().toString());
                                 break;
                         }
 
-                    }
-
+                        //remove metadata "date" "year" "month" "customerNumber" "timeStamp" "total"
+                        String[] metadatas = {"date", "year", "month", "customerNumber", "timestamp", "total"};
+                        for (String metadata : metadatas) {
+                            int index = itemTitle.indexOf(metadata);
+                            if(index != -1) {
+                                itemTitle.remove(index);
+                                noOfSales_makanan.remove(index);
+                            }
+                        }
 
                 }
                 RecycleAdapter_sales recycleAdapter_sales = new RecycleAdapter_sales(itemTitle, noOfSales_makanan);
