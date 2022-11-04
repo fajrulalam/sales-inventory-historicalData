@@ -7,7 +7,13 @@ import static java.lang.Math.abs;
 import android.app.ProgressDialog;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,10 +107,14 @@ public class HomeFragment extends Fragment {
                     String nominalPendapatan_str = String.format("%,d", pendapatanHariIni).replace(",", ".");
                     binding.nominalPendapatan.setText("Rp. " + nominalPendapatan_str);
 
-                    getRevenue_7DaysAgo();
+
+
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
                 }
+
+                getRevenue_7DaysAgo();
+
             }
         });
 
@@ -146,12 +156,26 @@ public class HomeFragment extends Fragment {
                     Log.i("7 hari yll", "" +pendapatan7HariYLL);
                     Log.i("selisih", "" +selisih);
                     String hari = getThisDayLastWeek().get(1);
-                    String nominalPendapatan_str = "Rp. " + String.format("%,d", abs(selisih)).replace(",", ".");
+                    String nominalPendapatan_str = "Rp" + String.format("%,d", abs(selisih)).replace(",", ".");
+                    StyleSpan boldSpan = new StyleSpan(Typeface.BOLD);
 
                     if (selisih > 0) {
-                        binding.pendapatanTodayLastWeek.setText("Naik " + nominalPendapatan_str + " dari hari " + hari + " minggu lalu");
+
+                        String text = "Naik " + nominalPendapatan_str + " dari hari " + hari + " minggu lalu";
+                        SpannableString ss = new SpannableString(text);
+                        ForegroundColorSpan fcsGreen = new ForegroundColorSpan(getResources().getColor(R.color.main_green));
+                        ss.setSpan(fcsGreen, 3, 3+nominalPendapatan_str.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        ss.setSpan(boldSpan, 0, 3+nominalPendapatan_str.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                        binding.pendapatanTodayLastWeek.setText(ss);
                     } else {
-                        binding.pendapatanTodayLastWeek.setText("Turun " + nominalPendapatan_str + " dari hari " + hari + " minggu lalu");
+                        String text = "Turun " + nominalPendapatan_str + " dari hari " + hari + " minggu lalu";
+                        SpannableString ss = new SpannableString(text);
+                        ForegroundColorSpan fcsGreen = new ForegroundColorSpan(getResources().getColor(R.color.purple_700));
+                        ss.setSpan(fcsGreen, 5, 5+nominalPendapatan_str.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        ss.setSpan(boldSpan, 0, 5+nominalPendapatan_str.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+                        binding.pendapatanTodayLastWeek.setText(ss);
                     }
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
@@ -177,14 +201,12 @@ public class HomeFragment extends Fragment {
         Date sevenDaysAgo_date = cal.getTime();
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatter_day = new SimpleDateFormat("EEE, yyyy MM dd", locale);
+        SimpleDateFormat formatter_day = new SimpleDateFormat("EEEE, yyyy MM dd", locale);
 
         String sevenDaysAgo_str = formatter.format(sevenDaysAgo_date);
         String day_date = formatter_day.format(sevenDaysAgo_date);
         String day = day_date.substring(0, day_date.indexOf(","));
-        if (day.matches("Jum")) {
-            day = day + "'at";
-        }
+
 
         ArrayList_sevenDaysAgo_date_day.add(sevenDaysAgo_str);
         ArrayList_sevenDaysAgo_date_day.add(day);
