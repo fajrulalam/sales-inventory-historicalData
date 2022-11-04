@@ -2,6 +2,8 @@ package com.example.dashboardandinventory2.ui.home;
 
 import static android.content.ContentValues.TAG;
 
+import static java.lang.Math.abs;
+
 import android.app.ProgressDialog;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -34,7 +36,12 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Map;
 
 public class HomeFragment extends Fragment {
@@ -50,14 +57,28 @@ public class HomeFragment extends Fragment {
      HomeViewModel homeViewModel;
      FragmentHomeBinding binding;
 
+     long pendapatanHariIni;
+     long pendapatan7HariYLL;
+     long pendapatanBulanIni;
+     long pendapatanBulanLalu;
+     long pendatanTahunIni;
+     long pendapatanTahunLalu;
+     Locale locale;
+
      FirebaseFirestore fs;
+        Calendar cal;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
-
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        cal = new GregorianCalendar();
+        locale = new Locale("id", "ID");
+
+
+
+
 
 //        final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -74,14 +95,20 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
 
-                Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
-                long nominalPendapatan = (long) map.get("total");
-                String nominalPendapatan_str = String.format("%,d", nominalPendapatan).replace(",", ".");
-                binding.nominalPendapatan.setText("Rp. " + nominalPendapatan_str);
+                try {
+                    Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
+                    pendapatanHariIni = (long) map.get("total");
+                    String nominalPendapatan_str = String.format("%,d", pendapatanHariIni).replace(",", ".");
+                    binding.nominalPendapatan.setText("Rp. " + nominalPendapatan_str);
 
-
+                    getRevenue_7DaysAgo();
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+
 
 
 
@@ -106,12 +133,63 @@ public class HomeFragment extends Fragment {
 
     }
 
+    public void getRevenue_7DaysAgo() {
+        fs.collection("DailyTransaction").document(getThisDayLastWeek().get(0)).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                try {
+                    Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
+                    pendapatan7HariYLL = (long) map.get("total");
+                    long selisih = pendapatanHariIni - pendapatan7HariYLL;
+                    Log.i("hari ini", "" +pendapatanHariIni);
+                    Log.i("7 hari yll", "" +pendapatan7HariYLL);
+                    Log.i("selisih", "" +selisih);
+                    String hari = getThisDayLastWeek().get(1);
+                    String nominalPendapatan_str = "Rp. " + String.format("%,d", abs(selisih)).replace(",", ".");
+
+                    if (selisih > 0) {
+                        binding.pendapatanTodayLastWeek.setText("Naik " + nominalPendapatan_str + " dari hari " + hari + " minggu lalu");
+                    } else {
+                        binding.pendapatanTodayLastWeek.setText("Turun " + nominalPendapatan_str + " dari hari " + hari + " minggu lalu");
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }
+        });
+    }
+
     public String getDate() {
         Long datetime = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(datetime);
         String date_full = (String) String.valueOf(timestamp);
         String date = date_full.substring(0, 10);
         return date;
+    }
+
+    public ArrayList<String> getThisDayLastWeek() {
+        ArrayList<String> ArrayList_sevenDaysAgo_date_day = new ArrayList<>();
+        cal.add(Calendar.DAY_OF_MONTH, -7);
+        Date sevenDaysAgo_date = cal.getTime();
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter_day = new SimpleDateFormat("EEE, yyyy MM dd", locale);
+
+        String sevenDaysAgo_str = formatter.format(sevenDaysAgo_date);
+        String day_date = formatter_day.format(sevenDaysAgo_date);
+        String day = day_date.substring(0, day_date.indexOf(","));
+        if (day.matches("Jum")) {
+            day = day + "'at";
+        }
+
+        ArrayList_sevenDaysAgo_date_day.add(sevenDaysAgo_str);
+        ArrayList_sevenDaysAgo_date_day.add(day);
+
+        return ArrayList_sevenDaysAgo_date_day;
     }
 
 
