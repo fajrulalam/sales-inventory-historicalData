@@ -85,6 +85,10 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
 
         Bundle bundle = this.getArguments();
         String date = bundle.getString("date");
+        String yearly_montly_daily = bundle.getString("yearly_montly_daily");
+        String collection = "";
+
+        Log.i("Date", date);
 
 //        Date dateformatter =
 
@@ -95,7 +99,6 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
         appBarLayout = view.findViewById(R.id.appBarLayout);
         linearLayout = view.findViewById(R.id.linearLayout);
         hideView(appBarLayout);
-
 
 
         itemTitleMinuman = new ArrayList<>();
@@ -110,43 +113,57 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
         fs = FirebaseFirestore.getInstance();
 
         String document = "";
+        String[] date_split = date.split(" ");
+
+        //true if it's YEARLY
         if (date.length() == 4) {
             document = date;
-        } else {
-            String[] date_split = date.split(" ");
-            if (date_split.length == 2) {
-                SimpleDateFormat formatter2 = new SimpleDateFormat("MMMM yyyy");
-                try {
-                    Date month = formatter2.parse(date);
-                    long month_epoch = month.getTime();
-                    Date month_date_Date = new Date(month_epoch);
-                    String dateTime_formatted = new SimpleDateFormat("yyyy-MM").format(month_date_Date);
-                    document = dateTime_formatted;
-                } catch (ParseException parseException) {
-                    parseException.printStackTrace();
-                }
+            collection = "YearlyTransaction";
 
+        }
 
-            } else {
-                SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
-                try {
-                    Date date1 = formatter.parse(date);
-                    long month_epoch = date1.getTime();
-                    Date month_date_Date = new Date(month_epoch);
-                    String dateTime_formatted = new SimpleDateFormat("yyyy-MM-dd").format(month_date_Date);
-                    document = dateTime_formatted;
-                } catch (ParseException parseException) {
-                    parseException.printStackTrace();
-                }
-
-
+        // true if it's MONTHLY
+        if (date_split.length == 2) {
+            SimpleDateFormat formatter2 = new SimpleDateFormat("MMMM yyyy");
+            try {
+                Date month = formatter2.parse(date);
+                long month_epoch = month.getTime();
+                Date month_date_Date = new Date(month_epoch);
+                String dateTime_formatted = new SimpleDateFormat("yyyy-MM").format(month_date_Date);
+                document = dateTime_formatted;
+            } catch (ParseException parseException) {
+                parseException.printStackTrace();
             }
+            collection = "MonthlyTransaction";
+
         }
 
 
-        appBarLayoutTextView.setText(document);
+        //true if it's DAILY
+        if (date_split.length == 3) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
+            try {
+                Date date1 = formatter.parse(date);
+                long month_epoch = date1.getTime();
+                Date month_date_Date = new Date(month_epoch);
+                String dateTime_formatted = new SimpleDateFormat("yyyy-MM-dd").format(month_date_Date);
+                document = dateTime_formatted;
+            } catch (ParseException parseException) {
+                parseException.printStackTrace();
+            }
 
-        fs.collection("DailyTransaction").document(document).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            collection = "DailyTransaction";
+
+
+        }
+
+        Log.i("Document", document);
+
+
+
+        appBarLayoutTextView.setText(date);
+
+        fs.collection(collection).document(document).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
@@ -239,6 +256,7 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
 
         return dialog;
     }
+
 
     private void hideView(View view) {
         ViewGroup.LayoutParams params = view.getLayoutParams();

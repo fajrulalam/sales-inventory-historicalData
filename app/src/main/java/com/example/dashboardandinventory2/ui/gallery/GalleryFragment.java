@@ -68,6 +68,7 @@ public class GalleryFragment extends Fragment {
     RecycleAdapter recycleAdapter;
     ArrayList<String> itemTitle;
     ArrayList<String> itemTitleMinuman;
+    String daily_monthly_yearly;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -137,7 +138,8 @@ public class GalleryFragment extends Fragment {
         });
 
         //Populate FnBList
-        populateFoodBevs();
+//        populateFoodBevs();
+        dailyTransaction();
 
         //On Click Listener in Filter Button
         filterbutton.setOnClickListener(new View.OnClickListener() {
@@ -149,16 +151,6 @@ public class GalleryFragment extends Fragment {
         });
 
 
-
-
-
-
-
-
-
-
-
-
         //Dropdown Listener
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -166,162 +158,14 @@ public class GalleryFragment extends Fragment {
 //                Toast.makeText(getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
                 switch (String.valueOf(adapterView.getItemAtPosition(position))) {
                     case "Daily Transaction":
-                        start_end_layout.setVisibility(View.VISIBLE);
-                        Toast.makeText(getContext(), "Daily Transactions", Toast.LENGTH_SHORT).show();
-                        fs.collection("DailyTransaction").orderBy("date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @RequiresApi(api = Build.VERSION_CODES.O)
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
-
-                                if (error !=null) {
-                                    Log.e("error!", "onEvent", error);
-                                    return;
-                                }
-
-                                if (value != null){
-                                    Log.i("Checkpoint", "Value is detected" );
-                                    itemTitleList.clear();
-                                    customerNoList.clear();
-                                    revenueList.clear();
-                                    List<DocumentSnapshot> snapshotList = value.getDocuments();
-                                    for (DocumentSnapshot snapshot : snapshotList) {
-                                        Map<String, Object> map = snapshot.getData();
-                                        Object date_obj = map.get("timestamp");
-                                        String date_str = (String.valueOf(date_obj));
-                                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
-                                        Long epoch_long = Long.parseLong(date_str_epoch);
-                                        ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
-                                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
-                                        Object customerNo = map.get("customerNumber");
-                                        String customerNo_str = (String.valueOf(customerNo));
-                                        Object revenue = map.get("total");
-                                        revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
-
-                                        String revenue_str = (String.valueOf(revenue));
-
-//
-                                        itemTitleList.add(dateTime_formatted);
-                                        customerNoList.add(customerNo_str);
-                                        revenueList.add(revenue_str);
-
-
-
-                                    }
-
-                                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
-                                    recyclerView.setAdapter(recycleAdapter);
-
-                                }
-                            }
-                        });
+                            dailyTransaction();
                         break;
 
                     case "Monthly Transaction":
-                        start_end_layout.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), "Monthly Transactions", Toast.LENGTH_SHORT).show();
-                        fs.collection("MonthlyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @RequiresApi(api = Build.VERSION_CODES.O)
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
-
-                                if (error !=null) {
-                                    Log.e("error!", "onEvent", error);
-                                    return;
-                                }
-
-                                if (value != null){
-                                    Log.i("Checkpoint", "Value is detected" );
-                                    itemTitleList.clear();
-                                    customerNoList.clear();
-                                    revenueList.clear();
-                                    List<DocumentSnapshot> snapshotList = value.getDocuments();
-                                    for (DocumentSnapshot snapshot : snapshotList) {
-                                        Map<String, Object> map = snapshot.getData();
-                                        Object date_obj = map.get("timestamp");
-                                        String date_str = (String.valueOf(date_obj));
-                                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
-                                        Long epoch_long = Long.parseLong(date_str_epoch);
-                                        ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
-                                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("MMMM yyyy"));
-                                        Object customerNo = map.get("customerNumber");
-                                        String customerNo_str = (String.valueOf(customerNo));
-                                        Object revenue = map.get("total");
-                                        revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
-
-                                        String revenue_str = (String.valueOf(revenue));
-
-//
-                                        itemTitleList.add(dateTime_formatted);
-                                        customerNoList.add(customerNo_str);
-                                        revenueList.add(revenue_str);
-
-
-
-                                    }
-//                                    Log.i("Title List", ""+itemTitleList);
-//                                    Log.i("Customer List", ""+customerNoList);
-//                                    Log.i("Revemue List", ""+revenueList);
-                                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
-                                    recyclerView.setAdapter(recycleAdapter);
-
-                                }
-                            }
-                        });
+                            montlyTransaction();
                         break;
                     case "Yearly Transaction":
-                        start_end_layout.setVisibility(View.GONE);
-                        Toast.makeText(getContext(), "Yearly Transactions", Toast.LENGTH_SHORT).show();
-                        fs.collection("YearlyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
-                            @RequiresApi(api = Build.VERSION_CODES.O)
-                            @Override
-                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-
-
-                                if (error !=null) {
-                                    Log.e("error!", "onEvent", error);
-                                    return;
-                                }
-
-                                if (value != null){
-                                    Log.i("Checkpoint", "Value is detected" );
-                                    itemTitleList.clear();
-                                    customerNoList.clear();
-                                    revenueList.clear();
-                                    List<DocumentSnapshot> snapshotList = value.getDocuments();
-                                    for (DocumentSnapshot snapshot : snapshotList) {
-                                        Map<String, Object> map = snapshot.getData();
-                                        Object date_obj = map.get("timestamp");
-                                        String date_str = (String.valueOf(date_obj));
-                                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
-                                        Long epoch_long = Long.parseLong(date_str_epoch);
-                                        ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
-                                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("YYYY"));
-                                        Object customerNo = map.get("customerNumber");
-                                        String customerNo_str = (String.valueOf(customerNo));
-                                        Object revenue = map.get("total");
-                                        revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
-
-                                        String revenue_str = (String.valueOf(revenue));
-
-//
-                                        itemTitleList.add(dateTime_formatted);
-                                        customerNoList.add(customerNo_str);
-                                        revenueList.add(revenue_str);
-
-
-
-                                    }
-//                                    Log.i("Title List", ""+itemTitleList);
-//                                    Log.i("Customer List", ""+customerNoList);
-//                                    Log.i("Revemue List", ""+revenueList);
-                                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
-                                    recyclerView.setAdapter(recycleAdapter);
-
-                                }
-                            }
-                        });
+                            yearlyTransaction();
                         break;
                 }
             }
@@ -425,10 +269,6 @@ public class GalleryFragment extends Fragment {
                                         dateRangePicker.dismiss();
 
 
-
-
-
-
                                     }
 //                                    Log.i("Title List", ""+itemTitleList);
 //                                    Log.i("Customer List", ""+customerNoList);
@@ -488,7 +328,6 @@ public class GalleryFragment extends Fragment {
 
                             long epoch_start_sec = TimeUnit.MILLISECONDS.toSeconds(Long.parseLong(dateRange_start));
                             long epoch_end_sec = TimeUnit.MILLISECONDS.toSeconds(Long.parseLong(dateRange_end)) + 86400;
-
 
 //                                long epoch_start_sec = TimeUnit.MILLISECONDS.toSeconds(dateRange_start_long) ;
 //                                long epoch_end_sec = TimeUnit.MILLISECONDS.toSeconds(dateRange_end_long) + 86400;
@@ -600,6 +439,7 @@ public class GalleryFragment extends Fragment {
                 String date = itemTitleList.get(position);
                 Bundle bundle = new Bundle();
                 bundle.putString("date", date);
+                bundle.putString("yearly_montly_daily", daily_monthly_yearly);
 
 //                Toast.makeText(getContext(), date, Toast.LENGTH_SHORT).show();
 
@@ -640,70 +480,11 @@ public class GalleryFragment extends Fragment {
         return root;
     }
 
-    public void populateFoodBevs() {
-        fs.collection("DailyTransaction").document(getDate()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
-                Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
-                SortedMap<String, Object> map_sorted = new TreeMap<>();
-                if(!(map == null)) {
-                    map_sorted.putAll(map);
-                    for (Map.Entry<String, Object> entry : map_sorted.entrySet()) {
-                        if (itemTitle.contains("date") || itemTitle.contains("year") || itemTitle.contains("month") || itemTitle.contains("customerNumber") || itemTitle.contains("timestamp") || itemTitle.contains("total")) {
-                            itemTitle.removeIf(s -> s.contains("date"));
-                            itemTitle.removeIf(s -> s.contains("year"));
-                            itemTitle.removeIf(s -> s.contains("month"));
-                            itemTitle.removeIf(s -> s.contains("customerNumber"));
-                            itemTitle.removeIf(s -> s.contains("timestamp"));
-                            itemTitle.removeIf(s -> s.contains("total"));
-                        } else {
-                            switch (entry.getKey()) {
-                                case "Aqua 600ml":
-                                case "Coca Cola":
-                                case "Es Kopi Durian":
-                                case "Es Teh":
-                                case "Fanta":
-                                case "Floridina":
-                                case "Frestea":
-                                case "Isoplus":
-                                case "Kopi Hitam":
-                                case "Milo":
-                                case "Sprite":
-                                case "Teh Pucuk Harum":
-                                    itemTitleMinuman.add(entry.getKey());
-                                    break;
-                                default:
-                                    itemTitle.add(entry.getKey());
-                                    break;
-                            }
-
-                        }
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
-
-
-
-                }
-                dailyTransaction();
-
-
-
-            }
-        });
-    }
 
     public void showFilterDialog(){
         Bundle bundle = new Bundle();
         bundle.putStringArrayList("makananList", itemTitle);
         bundle.putStringArrayList("minumanList", itemTitleMinuman);
-
-
-
-
-
     }
 
     public String getYear() {
@@ -722,8 +503,121 @@ public class GalleryFragment extends Fragment {
         return year;
     }
 
+    public void yearlyTransaction() {
+        daily_monthly_yearly = "yearly";
+
+        start_end_layout.setVisibility(View.GONE);
+        Toast.makeText(getContext(), "Yearly Transactions", Toast.LENGTH_SHORT).show();
+        fs.collection("YearlyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+                if (error !=null) {
+                    Log.e("error!", "onEvent", error);
+                    return;
+                }
+
+                if (value != null){
+                    Log.i("Checkpoint", "Value is detected" );
+                    itemTitleList.clear();
+                    customerNoList.clear();
+                    revenueList.clear();
+                    List<DocumentSnapshot> snapshotList = value.getDocuments();
+                    for (DocumentSnapshot snapshot : snapshotList) {
+                        Map<String, Object> map = snapshot.getData();
+                        Object date_obj = map.get("timestamp");
+                        String date_str = (String.valueOf(date_obj));
+                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                        Long epoch_long = Long.parseLong(date_str_epoch);
+                        ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
+                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("YYYY"));
+                        Object customerNo = map.get("customerNumber");
+                        String customerNo_str = (String.valueOf(customerNo));
+                        Object revenue = map.get("total");
+                        revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
+
+                        String revenue_str = (String.valueOf(revenue));
+
+//
+                        itemTitleList.add(dateTime_formatted);
+                        customerNoList.add(customerNo_str);
+                        revenueList.add(revenue_str);
+
+
+
+                    }
+//                                    Log.i("Title List", ""+itemTitleList);
+//                                    Log.i("Customer List", ""+customerNoList);
+//                                    Log.i("Revemue List", ""+revenueList);
+                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                    recyclerView.setAdapter(recycleAdapter);
+
+                }
+            }
+        });
+    }
+
+    public void montlyTransaction() {
+        daily_monthly_yearly = "monthly";
+        start_end_layout.setVisibility(View.GONE);
+        Toast.makeText(getContext(), "Monthly Transactions", Toast.LENGTH_SHORT).show();
+        fs.collection("MonthlyTransaction").addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+                if (error !=null) {
+                    Log.e("error!", "onEvent", error);
+                    return;
+                }
+
+                if (value != null){
+                    Log.i("Checkpoint", "Value is detected" );
+                    itemTitleList.clear();
+                    customerNoList.clear();
+                    revenueList.clear();
+                    List<DocumentSnapshot> snapshotList = value.getDocuments();
+                    for (DocumentSnapshot snapshot : snapshotList) {
+                        Map<String, Object> map = snapshot.getData();
+                        Object date_obj = map.get("timestamp");
+                        String date_str = (String.valueOf(date_obj));
+                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                        Long epoch_long = Long.parseLong(date_str_epoch);
+                        ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
+                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("MMMM yyyy"));
+                        Object customerNo = map.get("customerNumber");
+                        String customerNo_str = (String.valueOf(customerNo));
+                        Object revenue = map.get("total");
+                        revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
+
+                        String revenue_str = (String.valueOf(revenue));
+
+//
+                        itemTitleList.add(dateTime_formatted);
+                        customerNoList.add(customerNo_str);
+                        revenueList.add(revenue_str);
+
+
+
+                    }
+//                                    Log.i("Title List", ""+itemTitleList);
+//                                    Log.i("Customer List", ""+customerNoList);
+//                                    Log.i("Revemue List", ""+revenueList);
+                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                    recyclerView.setAdapter(recycleAdapter);
+
+                }
+            }
+        });
+
+    }
+
     public void dailyTransaction() {
         // do daily transaction
+        daily_monthly_yearly = "daily";
         start_end_layout.setVisibility(View.VISIBLE);
         Toast.makeText(getContext(), "Daily Transactions", Toast.LENGTH_SHORT).show();
         fs.collection("DailyTransaction").orderBy("date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
