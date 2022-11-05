@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -24,11 +25,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.dashboardandinventory2.FragmentBottomSheetFull;
 import com.example.dashboardandinventory2.NavigationDrawerActivity;
 import com.example.dashboardandinventory2.R;
 import com.example.dashboardandinventory2.databinding.FragmentHomeBinding;
@@ -42,7 +45,9 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -85,7 +90,6 @@ public class HomeFragment extends Fragment {
 
 
 
-
 //        final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
@@ -114,6 +118,26 @@ public class HomeFragment extends Fragment {
                 }
 
                 getRevenue_7DaysAgo();
+
+            }
+        });
+
+
+        binding.revenueContainer.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+
+                Long datetime = System.currentTimeMillis();
+                String dateTime_formatted = new SimpleDateFormat("dd MMM yyyy").format(datetime);
+                bundle.putString("date", dateTime_formatted);
+                bundle.putString("yearly_montly_daily", "daily");
+
+                FragmentBottomSheetFull bottomSheetFull = new FragmentBottomSheetFull();
+                bottomSheetFull.setArguments(bundle);
+                bottomSheetFull.show(getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
+
 
             }
         });

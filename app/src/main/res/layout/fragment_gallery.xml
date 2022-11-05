@@ -7,7 +7,7 @@
     tools:context=".ui.gallery.GalleryFragment"
     android:background="#FFFFFF">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,17 +20,18 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.0"
+        android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/inputType"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="5dp"
+            android:layout_height="70dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="52dp"
-            android:hint="Time Granularity"
+            android:layout_marginHorizontal="40dp"
+            android:layout_gravity="center"
+            android:hint="Daily Transactions"
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,21 +50,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:id="@+id/filterButton"
-            android:layout_height="50dp"
-            android:layout_marginTop="11dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/inputType"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.833"
-            android:backgroundTint="#80FFFFFF"
-            android:src="@drawable/ic_baseline_filter_alt_24" />
 
         <LinearLayout
             android:id="@+id/start_end_input"
@@ -81,24 +67,40 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
                 android:layout_gravity="center_vertical"
                 android:padding="1dp"
                 app:startIconDrawable="@drawable/ic_calendar">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/start_input"
-                    android:layout_width="280dp"
+                    android:layout_width="240dp"
                     android:layout_height="50dp"
                     android:layout_marginTop="5dp"
-                    android:hint="Date Range"
                     android:textSize="14sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <ImageButton
+                android:layout_width="50dp"
+                android:id="@+id/showAllButton"
+                android:layout_height="50dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/inputType"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.833"
+                android:backgroundTint="#80FFFFFF"
+                android:src="@drawable/ic_all"
+                android:scaleType="centerCrop" />
 
         </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/TimeGranularityRecyclerView"

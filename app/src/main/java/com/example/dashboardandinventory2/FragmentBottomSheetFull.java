@@ -114,6 +114,8 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
 
         String document = "";
         String[] date_split = date.split(" ");
+        String[] date_split_dash = date.split("-");
+//        collection = "DailyTransaction";
 
         //true if it's YEARLY
         if (date.length() == 4) {
@@ -123,7 +125,7 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
         }
 
         // true if it's MONTHLY
-        if (date_split.length == 2) {
+        if (date_split.length == 2  ^ (date_split_dash.length == 2) ) {
             SimpleDateFormat formatter2 = new SimpleDateFormat("MMMM yyyy");
             try {
                 Date month = formatter2.parse(date);
@@ -140,7 +142,7 @@ public class FragmentBottomSheetFull extends BottomSheetDialogFragment {
 
 
         //true if it's DAILY
-        if (date_split.length == 3) {
+        if ((date_split.length == 3)) {
             SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
             try {
                 Date date1 = formatter.parse(date);

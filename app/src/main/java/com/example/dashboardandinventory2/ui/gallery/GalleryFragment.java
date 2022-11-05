@@ -44,6 +44,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TimeZone;
@@ -69,11 +70,10 @@ public class GalleryFragment extends Fragment {
     ArrayList<String> itemTitle;
     ArrayList<String> itemTitleMinuman;
     String daily_monthly_yearly;
+    Locale locale;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        galleryViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
 
         binding = FragmentGalleryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -99,10 +99,13 @@ public class GalleryFragment extends Fragment {
 //        customerNoList.add("99");
 //        revenueList.add("10000");
 
+        locale = new Locale("id", "ID");
+
+
 
 
         recyclerView = root.findViewById(R.id.TimeGranularityRecyclerView);
-        filterbutton = root.findViewById(R.id.filterButton);
+        filterbutton = root.findViewById(R.id.showAllButton);
         recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
         recyclerView.setAdapter(recycleAdapter);
 
@@ -128,25 +131,32 @@ public class GalleryFragment extends Fragment {
 
 
 
-        //Filter Button on click listener
-        filterbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
 
-            }
-        });
 
         //Populate FnBList
 //        populateFoodBevs();
-        dailyTransaction();
+        dailyTransactionTop14();
 
-        //On Click Listener in Filter Button
-        filterbutton.setOnClickListener(new View.OnClickListener() {
+        final String[] show_all = {"show_14_days"};
+        binding.startInput.setHint("Last 14 days");
+
+        //Show all Button on click listener
+        binding.showAllButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (show_all[0].equals("show_14_days")) {
+                    show_all[0] = "show_all";
+                    dailyTransaction();
+                    binding.startInput.setHint("All Daily Transactions");
+                    binding.showAllButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_14));
+                } else {
+                    dailyTransactionTop14();
+                    show_all[0] = "show_14_days";
+                    binding.startInput.setHint("Last 14 days");
+                    binding.showAllButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_all));
 
-                showFilterDialog();
+                }
+
             }
         });
 
@@ -251,7 +261,7 @@ public class GalleryFragment extends Fragment {
                                         if (epoch_long >= epoch_start_sec && epoch_long <= epoch_end_sec) {
 
                                             ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")));
-                                            String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+                                            String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("E, dd MMM yyyy"));
                                             Object customerNo = map.get("customerNumber");
                                             String customerNo_str = (String.valueOf(customerNo));
                                             Object revenue = map.get("total");
@@ -366,30 +376,30 @@ public class GalleryFragment extends Fragment {
 
                                                 if (epoch_long >= epoch_start_sec && epoch_long <= epoch_end_sec) {
 
-                                                    for(Map.Entry<String,Object> entry : map.entrySet()) {
-
-                                                        if (listEntry.contains("date") || listEntry.contains("year") || listEntry.contains("month") || listEntry.contains("customerNumber") || listEntry.contains("timestamp") || listEntry.contains("total")) {
-                                                            listEntry.removeIf(s -> s.contains("date"));
-                                                            listEntry.removeIf(s -> s.contains("year"));
-                                                            listEntry.removeIf(s -> s.contains("month"));
-                                                            listEntry.removeIf(s -> s.contains("customerNumber"));
-                                                            listEntry.removeIf(s -> s.contains("timestamp"));
-                                                            listEntry.removeIf(s -> s.contains("total"));
-                                                            listValue.remove(listValue.size()-1);
-                                                        } else {
-                                                            listEntry.add(entry.getKey());
-                                                            listValue.add(entry.getValue());
-                                                        }
-
-
-                                                    }
+//                                                    for(Map.Entry<String,Object> entry : map.entrySet()) {
+//
+//                                                        if (listEntry.contains("date") || listEntry.contains("year") || listEntry.contains("month") || listEntry.contains("customerNumber") || listEntry.contains("timestamp") || listEntry.contains("total")) {
+//                                                            listEntry.removeIf(s -> s.contains("date"));
+//                                                            listEntry.removeIf(s -> s.contains("year"));
+//                                                            listEntry.removeIf(s -> s.contains("month"));
+//                                                            listEntry.removeIf(s -> s.contains("customerNumber"));
+//                                                            listEntry.removeIf(s -> s.contains("timestamp"));
+//                                                            listEntry.removeIf(s -> s.contains("total"));
+//                                                            listValue.remove(listValue.size()-1);
+//                                                        } else {
+//                                                            listEntry.add(entry.getKey());
+//                                                            listValue.add(entry.getValue());
+//                                                        }
+//
+//
+//                                                    }
 
 
                                                     Log.i("EXPERIMENT Entry", listEntry.toString() );
                                                     Log.i("EXPERIMENT Value", listValue.toString() );
 
                                                     ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")));
-                                                    String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+                                                    String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("E, dd MMM yyyy"));
                                                     Object customerNo = map.get("customerNumber");
                                                     String customerNo_str = (String.valueOf(customerNo));
                                                     Object revenue = map.get("total");
@@ -437,6 +447,9 @@ public class GalleryFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 String date = itemTitleList.get(position);
+                if (date.indexOf(",") != -1) {
+                    date = date.substring(date.indexOf(", ") + 2, date.length());
+                }
                 Bundle bundle = new Bundle();
                 bundle.putString("date", date);
                 bundle.putString("yearly_montly_daily", daily_monthly_yearly);
@@ -615,11 +628,66 @@ public class GalleryFragment extends Fragment {
 
     }
 
+    public void dailyTransactionTop14() {
+        // do daily transaction
+        daily_monthly_yearly = "daily";
+        start_end_layout.setVisibility(View.VISIBLE);
+        Toast.makeText(getContext(), "Last 14 Daily Transactions", Toast.LENGTH_SHORT).show();
+        fs.collection("DailyTransaction").orderBy("date", Query.Direction.DESCENDING).limit(14).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+
+                if (error !=null) {
+                    Log.e("error!", "onEvent", error);
+                    return;
+                }
+
+                if (value != null){
+                    Log.i("Checkpoint", "Value is detected" );
+                    itemTitleList.clear();
+                    customerNoList.clear();
+                    revenueList.clear();
+                    List<DocumentSnapshot> snapshotList = value.getDocuments();
+                    for (DocumentSnapshot snapshot : snapshotList) {
+                        Map<String, Object> map = snapshot.getData();
+                        Object date_obj = map.get("timestamp");
+                        String date_str = (String.valueOf(date_obj));
+                        String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                        Long epoch_long = Long.parseLong(date_str_epoch);
+                        ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
+                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("E, dd MMM yyyy", locale));
+                        Object customerNo = map.get("customerNumber");
+                        String customerNo_str = (String.valueOf(customerNo));
+                        Object revenue = map.get("total");
+                        revenue = "Rp" + String.format("%,d", revenue).replace(',', '.');
+
+                        String revenue_str = (String.valueOf(revenue));
+
+//
+                        itemTitleList.add(dateTime_formatted);
+                        customerNoList.add(customerNo_str);
+                        revenueList.add(revenue_str);
+
+
+
+                    }
+
+                    recycleAdapter = new RecycleAdapter(itemTitleList, customerNoList, revenueList);
+                    recyclerView.setAdapter(recycleAdapter);
+
+                }
+            }
+        });
+    }
+
+
     public void dailyTransaction() {
         // do daily transaction
         daily_monthly_yearly = "daily";
         start_end_layout.setVisibility(View.VISIBLE);
-        Toast.makeText(getContext(), "Daily Transactions", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Show All Daily Transactions", Toast.LENGTH_SHORT).show();
         fs.collection("DailyTransaction").orderBy("date", Query.Direction.DESCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -644,7 +712,7 @@ public class GalleryFragment extends Fragment {
                         String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
                         Long epoch_long = Long.parseLong(date_str_epoch);
                         ZonedDateTime dateTime = Instant.ofEpochSecond(epoch_long).atZone((ZoneId.of("Asia/Jakarta")) );
-                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+                        String dateTime_formatted = dateTime.format(DateTimeFormatter.ofPattern("E, dd MMM yyyy", locale));
                         Object customerNo = map.get("customerNumber");
                         String customerNo_str = (String.valueOf(customerNo));
                         Object revenue = map.get("total");
