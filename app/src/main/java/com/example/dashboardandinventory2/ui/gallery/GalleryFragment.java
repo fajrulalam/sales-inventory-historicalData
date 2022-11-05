@@ -371,7 +371,14 @@ public class GalleryFragment extends Fragment {
 
                                                 Object date_obj = map.get("timestamp");
                                                 String date_str = (String.valueOf(date_obj));
-                                                String date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                                                String date_str_epoch;
+                                                try {
+                                                    Log.i("date_Str", ""+ date_str);
+                                                    date_str_epoch = date_str.substring(date_str.indexOf("=") +1, date_str.indexOf(","));
+                                                } catch (StringIndexOutOfBoundsException s) {
+                                                    return;
+                                                }
+
                                                 Long epoch_long = Long.parseLong(date_str_epoch);
 
                                                 Log.i("Epoch Long", ""+ epoch_long);

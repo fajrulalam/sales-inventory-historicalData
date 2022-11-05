@@ -42,24 +42,29 @@ import com.example.dashboardandinventory2.ui.gallery.GalleryFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -87,6 +92,7 @@ public class HomeFragment extends Fragment {
      FirebaseFirestore fs;
         Calendar cal;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         binding = FragmentHomeBinding.inflate(inflater, container, false);
@@ -106,6 +112,8 @@ public class HomeFragment extends Fragment {
         fs = FirebaseFirestore.getInstance();
         resetPadding();
         whatDayIsIt();
+        ArrayList<Integer> revenueThisPeriod = revenuePerDayThisPeriod();
+
 
         binding.refresh.setRefreshing(true);
         fs.collection("DailyTransaction").document(getDate()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -245,8 +253,11 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Jum'at", Toast.LENGTH_SHORT).show();
                     binding.resetButton.setVisibility(View.VISIBLE);
                     binding.periodeTitle.setText("Jum'at Periode ini");
-                    resetPadding();
-                    binding.day1Container.setPadding(17, 17, 17, 17);
+                    sudahHari_x(linearLayout);
+                    int posisi = abs(1-revenueThisPeriod.toArray().length);
+                    String format = String.format("%,d", revenueThisPeriod.get(posisi)).replace(",", ".");
+                    binding.pendapatanMingguIni.setText("Rp. " + format);
+
                 }
             }
         });
@@ -258,8 +269,19 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Sabtu", Toast.LENGTH_SHORT).show();
                     binding.resetButton.setVisibility(View.VISIBLE);
                     binding.periodeTitle.setText("Sabtu Periode ini");
-                    resetPadding();
-                    binding.day2Container.setPadding(17, 17, 17, 17);
+                    sudahHari_x(linearLayout);
+
+                    if (2 - revenueThisPeriod.toArray().length > 0) {
+                        binding.pendapatanMingguIni.setText("Rp. " + "0");
+                        return;
+                    }
+
+                    int posisi = abs(2 - revenueThisPeriod.toArray().length);
+                    String format = String.format("%,d", revenueThisPeriod.get(posisi)).replace(",", ".");
+                    binding.pendapatanMingguIni.setText("Rp. " + format);
+
+
+
                 } else {
                     masihHari_x(linearLayout);
                 }
@@ -273,8 +295,16 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Minggu", Toast.LENGTH_SHORT).show();
                     binding.resetButton.setVisibility(View.VISIBLE);
                     binding.periodeTitle.setText("Minggu Periode ini");
-                    resetPadding();
-                    binding.day3Container.setPadding(17, 17, 17, 17);
+                    sudahHari_x(linearLayout);
+
+                    if (3 - revenueThisPeriod.toArray().length > 0) {
+                        binding.pendapatanMingguIni.setText("Rp. " + "0");
+                        return;
+                    }
+                    int posisi = abs(3 - revenueThisPeriod.toArray().length);
+                    String format = String.format("%,d", revenueThisPeriod.get(posisi)).replace(",", ".");
+                    binding.pendapatanMingguIni.setText("Rp. " + format);
+
                 } else {
                     masihHari_x(linearLayout);
                 }
@@ -288,8 +318,15 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Senin", Toast.LENGTH_SHORT).show();
                     binding.resetButton.setVisibility(View.VISIBLE);
                     binding.periodeTitle.setText("Senin Periode ini");
-                    resetPadding();
-                    binding.day4Container.setPadding(17, 17, 17, 17);
+                    sudahHari_x(linearLayout);
+                    if (4 - revenueThisPeriod.toArray().length > 0) {
+                        binding.pendapatanMingguIni.setText("Rp. " + "0");
+                        return;
+                    }
+                    int posisi = abs(4 - revenueThisPeriod.toArray().length);
+                    String format = String.format("%,d", revenueThisPeriod.get(posisi)).replace(",", ".");
+                    binding.pendapatanMingguIni.setText("Rp. " + format);
+
                 } else {
                     masihHari_x(linearLayout);
                 }
@@ -303,8 +340,16 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Selasa", Toast.LENGTH_SHORT).show();
                     binding.resetButton.setVisibility(View.VISIBLE);
                     binding.periodeTitle.setText("Selasa Periode ini");
-                    resetPadding();
-                    binding.day5Container.setPadding(17, 17, 17, 17);
+                    sudahHari_x(linearLayout);
+                    if (5 - revenueThisPeriod.toArray().length > 0) {
+                        binding.pendapatanMingguIni.setText("Rp. " + "0");
+                        return;
+                    }
+                    int posisi = abs(5 - revenueThisPeriod.toArray().length);
+                    String format = String.format("%,d", revenueThisPeriod.get(posisi)).replace(",", ".");
+                    binding.pendapatanMingguIni.setText("Rp. " + format);
+
+
                 } else {
                     masihHari_x(linearLayout);
                 }
@@ -318,8 +363,15 @@ public class HomeFragment extends Fragment {
                     Toast.makeText(getContext(), "Rabu", Toast.LENGTH_SHORT).show();
                     binding.resetButton.setVisibility(View.VISIBLE);
                     binding.periodeTitle.setText("Rabu Periode ini");
-                    resetPadding();
                     binding.day6Container.setPadding(17, 17, 17, 17);
+
+                    if (6 - revenueThisPeriod.toArray().length > 0) {
+                        binding.pendapatanMingguIni.setText("Rp. " + "0");
+                        return;
+                    }
+                    int posisi = abs(6 - revenueThisPeriod.toArray().length);
+                    String format = String.format("%,d", revenueThisPeriod.get(posisi)).replace(",", ".");
+                    binding.pendapatanMingguIni.setText("Rp. " + format);
                 } else {
                     masihHari_x(linearLayout);
                 }
@@ -333,8 +385,16 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getContext(), "Kamis", Toast.LENGTH_SHORT).show();
                 binding.resetButton.setVisibility(View.VISIBLE);
                 binding.periodeTitle.setText("Kamis Periode ini");
-                resetPadding();
-                binding.day7Container.setPadding(17,17,17,17);
+                sudahHari_x(linearLayout);
+
+                if (7 - revenueThisPeriod.toArray().length > 0) {
+                    binding.pendapatanMingguIni.setText("Rp. " + "0");
+                    return;
+                }
+                int posisi = abs(7 - revenueThisPeriod.toArray().length);
+                String format = String.format("%,d", revenueThisPeriod.get(posisi)).replace(",", ".");
+                binding.pendapatanMingguIni.setText("Rp. " + format);
+
                 }  else {
                     masihHari_x(linearLayout);
                 }
@@ -348,8 +408,20 @@ public class HomeFragment extends Fragment {
                 binding.resetButton.setVisibility(View.GONE);
                 binding.periodeTitle.setText("Periode ini");
                 resetPadding();
+                int sum = 0;
+                for(int d : revenueThisPeriod) {
+                    sum += d;
+                    String nominalPendapatan_str = String.format("%,d", sum).replace(",", ".");
+                    binding.pendapatanMingguIni.setText("Rp. " + nominalPendapatan_str);
+                }
+
             }
         });
+
+
+
+
+
 
 
 
@@ -370,6 +442,19 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    public void sudahHari_x(View linearLayout) {
+        resetPadding();
+        linearLayout.setPadding(12,12,12,12);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 2s
+                linearLayout.setPadding(17,17,17,17);
+            }
+        }, 50);
+    }
+
     public void masihHari_x(View linearLayout) {
         Toast.makeText(getContext(), "Masih hari " + getThisDayLastWeek().get(1), Toast.LENGTH_SHORT).show();
         linearLayout.setPadding(17,17,17,17);
@@ -382,6 +467,71 @@ public class HomeFragment extends Fragment {
 
             }
         }, 75);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<Integer> revenuePerDayThisPeriod() {
+        ArrayList<Integer> revenuePerDayThisPeriod = new ArrayList<>();
+
+//        revenuePerDayThisPeriod.add(((int) pendapatanHariIni));
+
+        int hari_ke = whatDayIsIt();
+        LocalDate localDate = LocalDate.now().with(TemporalAdjusters.previous( DayOfWeek.FRIDAY ));
+        ZoneId zoneId = ZoneId.systemDefault(); // or: ZoneId.of("Europe/Oslo");
+        long epoch = localDate.atStartOfDay(zoneId).toEpochSecond();
+        String theLastFriday = localDate.toString();
+
+        fs.collection("DailyTransaction").orderBy("date", Query.Direction.DESCENDING).limit(7).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                if (value != null) {
+                    revenuePerDayThisPeriod.clear();
+                    List<DocumentSnapshot> snapshotList = value.getDocuments();
+                    for (DocumentSnapshot snapshot : snapshotList) {
+                        Map<String, Object> map = snapshot.getData();
+
+                        Object date_obj = map.get("timestamp");
+                        String date_str = (String.valueOf(date_obj));
+                        String date_str_epoch = date_str.substring(date_str.indexOf("=") + 1, date_str.indexOf(","));
+                        Long epoch_long = Long.parseLong(date_str_epoch);
+
+                        Log.i("Epoch Long", "" + epoch_long);
+
+                        if (epoch_long >= epoch) {
+                            int total = Integer.parseInt(map.get("total").toString());
+                            revenuePerDayThisPeriod.add(total);
+                            Log.i("Revenue Total", revenuePerDayThisPeriod.toString());
+                        }
+
+                        int sum = 0;
+                        for(int d : revenuePerDayThisPeriod) {
+                            sum += d;
+                            String nominalPendapatan_str = String.format("%,d", sum).replace(",", ".");
+                            binding.pendapatanMingguIni.setText("Rp. " + nominalPendapatan_str);
+                        }
+
+                    }
+
+                }
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        return revenuePerDayThisPeriod;
     }
 
 
