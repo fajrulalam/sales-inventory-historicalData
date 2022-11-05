@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,7 +74,7 @@ public class HomeFragment extends Fragment {
 //    private ActivityNavigationDrawerBinding binding;
 
      HomeViewModel homeViewModel;
-    FragmentHomeBinding binding;
+     FragmentHomeBinding binding;
 
      long pendapatanHariIni;
      long pendapatan7HariYLL;
@@ -102,6 +104,8 @@ public class HomeFragment extends Fragment {
         });
 
         fs = FirebaseFirestore.getInstance();
+        resetPadding();
+        whatDayIsIt();
 
         binding.refresh.setRefreshing(true);
         fs.collection("DailyTransaction").document(getDate()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -232,47 +236,118 @@ public class HomeFragment extends Fragment {
             }
         });
 
-
+        int hari_ke = whatDayIsIt();
         binding.day1Container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Day1 clicked", Toast.LENGTH_SHORT).show();
+                LinearLayout linearLayout = binding.day1Container;
+                if (hari_ke >= 1) {
+                    Toast.makeText(getContext(), "Jum'at", Toast.LENGTH_SHORT).show();
+                    binding.resetButton.setVisibility(View.VISIBLE);
+                    binding.periodeTitle.setText("Jum'at Periode ini");
+                    resetPadding();
+                    binding.day1Container.setPadding(17, 17, 17, 17);
+                }
             }
         });
         binding.day2Container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Day2 clicked", Toast.LENGTH_SHORT).show();
+                LinearLayout linearLayout = binding.day2Container;
+                if (hari_ke >= 2) {
+                    Toast.makeText(getContext(), "Sabtu", Toast.LENGTH_SHORT).show();
+                    binding.resetButton.setVisibility(View.VISIBLE);
+                    binding.periodeTitle.setText("Sabtu Periode ini");
+                    resetPadding();
+                    binding.day2Container.setPadding(17, 17, 17, 17);
+                } else {
+                    masihHari_x(linearLayout);
+                }
             }
         });
         binding.day3Container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Day3 clicked", Toast.LENGTH_SHORT).show();
+                LinearLayout linearLayout = binding.day3Container;
+                if (hari_ke >= 3) {
+                    Toast.makeText(getContext(), "Minggu", Toast.LENGTH_SHORT).show();
+                    binding.resetButton.setVisibility(View.VISIBLE);
+                    binding.periodeTitle.setText("Minggu Periode ini");
+                    resetPadding();
+                    binding.day3Container.setPadding(17, 17, 17, 17);
+                } else {
+                    masihHari_x(linearLayout);
+                }
             }
         });
         binding.day4Container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Day4 clicked", Toast.LENGTH_SHORT).show();
+                LinearLayout linearLayout = binding.day4Container;
+                if (hari_ke >= 4) {
+                    Toast.makeText(getContext(), "Senin", Toast.LENGTH_SHORT).show();
+                    binding.resetButton.setVisibility(View.VISIBLE);
+                    binding.periodeTitle.setText("Senin Periode ini");
+                    resetPadding();
+                    binding.day4Container.setPadding(17, 17, 17, 17);
+                } else {
+                    masihHari_x(linearLayout);
+                }
             }
         });
         binding.day5Container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Day5 clicked", Toast.LENGTH_SHORT).show();
+                LinearLayout linearLayout = binding.day5Container;
+                if (hari_ke >= 5) {
+                    Toast.makeText(getContext(), "Selasa", Toast.LENGTH_SHORT).show();
+                    binding.resetButton.setVisibility(View.VISIBLE);
+                    binding.periodeTitle.setText("Selasa Periode ini");
+                    resetPadding();
+                    binding.day5Container.setPadding(17, 17, 17, 17);
+                } else {
+                    masihHari_x(linearLayout);
+                }
             }
         });
         binding.day6Container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Day6 clicked", Toast.LENGTH_SHORT).show();
+                LinearLayout linearLayout = binding.day6Container;
+                if (hari_ke >= 6) {
+                    Toast.makeText(getContext(), "Rabu", Toast.LENGTH_SHORT).show();
+                    binding.resetButton.setVisibility(View.VISIBLE);
+                    binding.periodeTitle.setText("Rabu Periode ini");
+                    resetPadding();
+                    binding.day6Container.setPadding(17, 17, 17, 17);
+                } else {
+                    masihHari_x(linearLayout);
+                }
             }
         });
         binding.day7Container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Day7 clicked", Toast.LENGTH_SHORT).show();
+                LinearLayout linearLayout = binding.day7Container;
+                if (hari_ke >= 7){
+                Toast.makeText(getContext(), "Kamis", Toast.LENGTH_SHORT).show();
+                binding.resetButton.setVisibility(View.VISIBLE);
+                binding.periodeTitle.setText("Kamis Periode ini");
+                resetPadding();
+                binding.day7Container.setPadding(17,17,17,17);
+                }  else {
+                    masihHari_x(linearLayout);
+                }
+            }
+        });
+
+        binding.resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Periode ini", Toast.LENGTH_SHORT).show();
+                binding.resetButton.setVisibility(View.GONE);
+                binding.periodeTitle.setText("Periode ini");
+                resetPadding();
             }
         });
 
@@ -293,6 +368,100 @@ public class HomeFragment extends Fragment {
 
 
         return root;
+    }
+
+    public void masihHari_x(View linearLayout) {
+        Toast.makeText(getContext(), "Masih hari " + getThisDayLastWeek().get(1), Toast.LENGTH_SHORT).show();
+        linearLayout.setPadding(17,17,17,17);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 2s
+                linearLayout.setPadding(22,22,22,22);
+
+            }
+        }, 75);
+    }
+
+
+    public int whatDayIsIt() {
+        String hari = getThisDayLastWeek().get(1);
+        int hari_ke;
+        switch (hari) {
+            case "Jum'at":
+                hari_ke = 1;
+                binding.day1.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                break;
+            case "Sabtu":
+                hari_ke = 2;
+                binding.day1.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day2.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                break;
+            case "Minggu":
+                hari_ke = 3;
+                binding.day1.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day2.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day3.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+
+                break;
+            case "Senin":
+                hari_ke = 4;
+                binding.day1.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day2.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day3.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day4.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+
+                break;
+            case "Selasa":
+                hari_ke = 5;
+                binding.day1.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day2.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day3.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day4.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day5.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+
+                break;
+            case "Rabu":
+                hari_ke = 6;
+                binding.day1.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day2.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day3.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day4.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day5.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day6.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                break;
+            case "Kamis":
+                hari_ke = 7;
+                binding.day1.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day2.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day3.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day4.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day5.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day6.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+                binding.day7.setBackground(getResources().getDrawable(R.drawable.outline_with_green_fill));
+
+                break;
+            default:
+                hari_ke = 0;
+        }
+
+        return hari_ke;
+
+    }
+
+
+
+
+    private void resetPadding() {
+
+        binding.day1Container.setPadding(22,22,22,22);
+        binding.day2Container.setPadding(22,22,22,22);
+        binding.day3Container.setPadding(22,22,22,22);
+        binding.day4Container.setPadding(22,22,22,22);
+        binding.day5Container.setPadding(22,22,22,22);
+        binding.day6Container.setPadding(22,22,22,22);
+        binding.day7Container.setPadding(22,22,22,22);
     }
 
     private void getDailyRevenue() {

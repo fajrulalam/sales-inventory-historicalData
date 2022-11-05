@@ -249,8 +249,6 @@
                                 android:visibility="gone"
                                 android:fontFamily="@font/poppins_bold"/>
 
-
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
@@ -260,11 +258,12 @@
 
 
                                 <TextView
+                                    android:id="@+id/periodeTitle"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/poppins_regular"
                                     android:paddingTop="20dp"
-                                    android:text="Minggu ini"
+                                    android:text="Periode ini"
                                     android:textAlignment="center"
                                     android:textSize="18dp" />
 
@@ -313,7 +312,7 @@
                                         android:layout_width="25dp"
                                         android:layout_height="25dp"
                                         android:layout_marginLeft="5dp"
-                                        android:padding="7.5dp"
+                                        android:padding="8dp"
                                         android:clickable="true"
                                         android:gravity="center">
 
@@ -335,7 +334,7 @@
                                         android:layout_width="25dp"
                                         android:layout_height="25dp"
                                         android:layout_marginLeft="5dp"
-                                        android:padding="7.5dp"
+                                        android:padding="8dp"
                                         android:clickable="true"
                                         android:gravity="center">
 
@@ -355,7 +354,7 @@
                                         android:layout_width="25dp"
                                         android:layout_height="25dp"
                                         android:layout_marginLeft="5dp"
-                                        android:padding="7.5dp"
+                                        android:padding="8dp"
                                         android:clickable="true"
                                         android:gravity="center">
 
@@ -375,7 +374,7 @@
                                         android:layout_width="25dp"
                                         android:layout_height="25dp"
                                         android:layout_marginLeft="5dp"
-                                        android:padding="7.5dp"
+                                        android:padding="8dp"
                                         android:clickable="true"
                                         android:gravity="center">
 
@@ -394,7 +393,7 @@
                                         android:layout_width="25dp"
                                         android:layout_height="25dp"
                                         android:layout_marginLeft="5dp"
-                                        android:padding="7.5dp"
+                                        android:padding="8dp"
                                         android:clickable="true"
                                         android:gravity="center">
 
@@ -413,7 +412,7 @@
                                         android:layout_width="25dp"
                                         android:layout_height="25dp"
                                         android:layout_marginLeft="5dp"
-                                        android:padding="7.5dp"
+                                        android:padding="8dp"
                                         android:clickable="true"
                                         android:gravity="center">
 
@@ -432,7 +431,7 @@
                                         android:layout_width="25dp"
                                         android:layout_height="25dp"
                                         android:layout_marginLeft="5dp"
-                                        android:padding="7.5dp"
+                                        android:padding="8dp"
                                         android:clickable="true"
                                         android:gravity="center">
 
