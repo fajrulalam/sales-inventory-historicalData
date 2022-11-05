@@ -41,8 +41,10 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -66,7 +68,7 @@ public class HomeFragment extends Fragment {
 //    private ActivityNavigationDrawerBinding binding;
 
      HomeViewModel homeViewModel;
-     FragmentHomeBinding binding;
+    FragmentHomeBinding binding;
 
      long pendapatanHariIni;
      long pendapatan7HariYLL;
@@ -100,11 +102,10 @@ public class HomeFragment extends Fragment {
 
         fs = FirebaseFirestore.getInstance();
 
-
-        fs.collection("DailyTransaction").document(getDate()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        binding.refresh.setRefreshing(true);
+        fs.collection("DailyTransaction").document(getDate()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException error) {
                 try {
                     Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
                     pendapatanHariIni = (long) map.get("total");
@@ -116,11 +117,55 @@ public class HomeFragment extends Fragment {
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
                 }
-
                 getRevenue_7DaysAgo();
+
+
+                fs.collection("MonthlyTransaction").document(getDate().substring(0, 7)).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        try {
+                            Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
+                            pendapatanBulanIni = (long) map.get("total");
+                            String nominalPendapatan_str = String.format("%,d", pendapatanBulanIni).replace(",", ".");
+                            binding.pendapatanBulanIni.setText("Rp. " + nominalPendapatan_str);
+                        } catch (Exception e) {
+                            Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
+                        }
+                        //getThisDayLastMonth
+
+
+                        fs.collection("YearlyTransaction").document(getDate().substring(0, 4)).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                try {
+                                    Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
+                                    pendatanTahunIni = (long) map.get("total");
+                                    String nominalPendapatan_str = String.format("%,d", pendatanTahunIni).replace(",", ".");
+                                    binding.pendapatanTahunIni.setText("Rp. " + nominalPendapatan_str);
+                                } catch (Exception e) {
+                                    Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
+                                }
+                                //getThisDayLastYear
+                            }
+                        });
+
+                    }
+                });
 
             }
         });
+
+        binding.refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDailyRevenue();
+
+
+            }
+        });
+
+
+
 
 
         binding.revenueContainer.setOnClickListener(new View.OnClickListener() {
@@ -161,6 +206,32 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    private void getDailyRevenue() {
+        binding.refresh.setRefreshing(true);
+
+        fs.collection("DailyTransaction").document(getDate()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                try {
+                    Map<String, Object> map = (Map<String, Object>) documentSnapshot.getData();
+                    pendapatanHariIni = (long) map.get("total");
+                    String nominalPendapatan_str = String.format("%,d", pendapatanHariIni).replace(",", ".");
+                    binding.nominalPendapatan.setText("Rp. " + nominalPendapatan_str);
+
+
+
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
+                }
+
+                binding.refresh.setRefreshing(false);
+
+//                getRevenue_7DaysAgo();
+            }
+        });
+
+    }
+
     public void timeFrameButtonClick(View view) {
         Log.i(TAG, "timeFrameButtonClick: ");
 
@@ -188,8 +259,8 @@ public class HomeFragment extends Fragment {
                         String text = "Naik " + nominalPendapatan_str + " dari hari " + hari + " minggu lalu";
                         SpannableString ss = new SpannableString(text);
                         ForegroundColorSpan fcsGreen = new ForegroundColorSpan(getResources().getColor(R.color.main_green));
-                        ss.setSpan(fcsGreen, 3, 3+nominalPendapatan_str.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        ss.setSpan(boldSpan, 0, 3+nominalPendapatan_str.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        ss.setSpan(fcsGreen, 4, 4+nominalPendapatan_str.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        ss.setSpan(boldSpan, 0, 4+nominalPendapatan_str.length()+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                         binding.pendapatanTodayLastWeek.setText(ss);
                     } else {
@@ -201,9 +272,12 @@ public class HomeFragment extends Fragment {
 
                         binding.pendapatanTodayLastWeek.setText(ss);
                     }
+                    binding.refresh.setRefreshing(false);
                 } catch (Exception e) {
                     Toast.makeText(getContext(), "Belum ada input hari ini", Toast.LENGTH_SHORT).show();
                 }
+
+
 
 
 
@@ -221,6 +295,7 @@ public class HomeFragment extends Fragment {
 
     public ArrayList<String> getThisDayLastWeek() {
         ArrayList<String> ArrayList_sevenDaysAgo_date_day = new ArrayList<>();
+        cal = new GregorianCalendar();
         cal.add(Calendar.DAY_OF_MONTH, -7);
         Date sevenDaysAgo_date = cal.getTime();
 

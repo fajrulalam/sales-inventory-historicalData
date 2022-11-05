@@ -168,14 +168,17 @@ public class GalleryFragment extends Fragment {
 //                Toast.makeText(getContext(), "Item clicked", Toast.LENGTH_SHORT).show();
                 switch (String.valueOf(adapterView.getItemAtPosition(position))) {
                     case "Daily Transaction":
-                            dailyTransaction();
+                        dailyTransactionTop14();
+                        show_all[0] = "show_14_days";
+                        binding.startInput.setHint("Last 14 days");
+                        binding.showAllButton.setImageDrawable(getResources().getDrawable(R.drawable.ic_all));
                         break;
 
                     case "Monthly Transaction":
-                            montlyTransaction();
+                        montlyTransaction();
                         break;
                     case "Yearly Transaction":
-                            yearlyTransaction();
+                        yearlyTransaction();
                         break;
                 }
             }
@@ -633,7 +636,7 @@ public class GalleryFragment extends Fragment {
         daily_monthly_yearly = "daily";
         start_end_layout.setVisibility(View.VISIBLE);
         Toast.makeText(getContext(), "Last 14 Daily Transactions", Toast.LENGTH_SHORT).show();
-        fs.collection("DailyTransaction").orderBy("date", Query.Direction.DESCENDING).limit(14).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fs.collection("DailyTransaction").orderBy("date", Query.Direction.DESCENDING).limit(15).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

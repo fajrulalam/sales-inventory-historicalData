@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#ECECEC"
     android:layout_height="match_parent"
     tools:context=".NavigationDrawerActivity">
 
@@ -12,7 +13,6 @@
         android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="710dp">
-
 
         <ScrollView
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                     <androidx.cardview.widget.CardView
                         android:id="@+id/revenue_container"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
+                        android:layout_height="200dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="30dp"
                         android:layout_marginRight="20dp"
@@ -51,12 +51,11 @@
                                 android:id="@+id/pendapatanKapan"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="65dp"
                                 android:fontFamily="@font/poppins_regular"
                                 android:paddingTop="20dp"
                                 android:text="Pendapatan Hari ini"
                                 android:textAlignment="center"
-                                android:textSize="28dp" />
+                                android:textSize="24dp" />
 
                             <TextView
                                 android:id="@+id/nominalPendapatan"
@@ -74,30 +73,260 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="50dp"
                                 android:layout_marginHorizontal="20dp"
-                                app:dividerColor="@color/black"
-                                android:alpha="0.3"/>
+                                android:layout_marginTop="20dp"
+                                android:alpha="0.3"
+                                app:dividerColor="@color/black" />
 
                             <TextView
                                 android:id="@+id/pendapatanTodayLastWeek"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="8dp"
-                                android:text="Naik Rp 20.000 dari hari Jum'at minggu lalu"
                                 android:layout_gravity="center"
-                                android:textSize="14sp"
+                                android:layout_marginHorizontal="20dp"
+                                android:layout_marginTop="8dp"
                                 android:fontFamily="@font/poppins_regular"
-                                android:layout_marginHorizontal="20dp"/>
+                                android:text="Naik Rp 20.000 dari hari Jum'at minggu lalu"
+                                android:textSize="14sp" />
                         </LinearLayout>
-
-
 
 
                     </androidx.cardview.widget.CardView>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="150dp"
+                            android:layout_weight="0.7"
+                            android:layout_marginBottom="10dp"
+                            app:cardElevation="5dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginRight="8dp"
+                            android:paddingTop="16dp"
+                            app:cardCornerRadius="20dp"
+                            android:paddingHorizontal="24dp">
 
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:paddingTop="20dp"
+                                    android:text="Bulan ini"
+                                    android:textAlignment="center"
+                                    android:textSize="18dp" />
+
+                                <TextView
+                                    android:id="@+id/pendapatanBulanIni"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/montserrat_bold"
+                                    android:text="Rp21.000.000"
+                                    android:textAlignment="center"
+                                    android:textColor="#E6255C27"
+                                    android:alpha="0.7"
+                                    android:textSize="20dp" />
+
+                                <com.google.android.material.divider.MaterialDivider
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginHorizontal="20dp"
+                                    android:layout_marginTop="20dp"
+                                    android:alpha="0.3"
+                                    app:dividerColor="@color/black" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginHorizontal="20dp"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:text="Naik Rp 20.000.000 dari tanggal ini bulan lalu"
+                                    android:textSize="10sp" />
+                            </LinearLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="150dp"
+                            android:layout_weight="0.5"
+                            app:cardElevation="5dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginLeft="8dp"
+                            android:paddingTop="16dp"
+                            app:cardCornerRadius="20dp"
+                            android:backgroundTint="#BED5E3"
+                            android:paddingHorizontal="24dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="90dp"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/ic_analytics"
+                                    android:scaleType="fitCenter"
+                                    android:scaleY="0.75"
+                                    android:scaleX="0.75"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserrat_bold"
+                                    android:text="Analytics"
+                                    android:gravity="center"
+                                    android:layout_gravity="center"
+                                    android:textSize="16dp"
+                                    android:layout_marginTop="4dp"
+                                    android:textColor="@color/black"/>
+
+                            </LinearLayout>
+
+
+
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginLeft="20dp"
+                            android:layout_height="150dp"
+                            android:layout_weight="0.5"
+                            app:cardElevation="5dp"
+                            android:layout_marginRight="8dp"
+                            android:paddingTop="16dp"
+                            android:layout_marginBottom="10dp"
+                            android:backgroundTint="@color/divider"
+                            app:cardCornerRadius="20dp"
+                            android:paddingHorizontal="24dp">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="90dp"
+                                    android:layout_marginTop="10dp"
+                                    android:src="@drawable/ic_history"
+                                    android:scaleType="fitCenter"
+                                    android:scaleY="0.75"
+                                    android:scaleX="0.75"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/montserrat_bold"
+                                    android:text="History"
+                                    android:gravity="center"
+                                    android:layout_gravity="center"
+                                    android:textSize="16dp"
+                                    android:layout_marginTop="4dp"
+                                    android:textColor="@color/black"/>
+
+                            </LinearLayout>
+
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_height="150dp"
+                            android:layout_weight="0.7"
+                            android:layout_marginRight="20dp"
+                            app:cardElevation="5dp"
+                            android:layout_marginTop="24dp"
+                            android:layout_marginLeft="8dp"
+                            android:paddingTop="16dp"
+                            app:cardCornerRadius="20dp"
+                            android:paddingHorizontal="24dp">
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:paddingTop="20dp"
+                                    android:text="Tahun ini"
+                                    android:textAlignment="center"
+                                    android:textSize="18dp" />
+
+                                <TextView
+                                    android:id="@+id/pendapatanTahunIni"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginTop="5dp"
+                                    android:fontFamily="@font/montserrat_bold"
+                                    android:text="Rp21.000.000"
+                                    android:textAlignment="center"
+                                    android:textColor="#E6255C27"
+                                    android:alpha="0.7"
+                                    android:textSize="20dp" />
+
+                                <com.google.android.material.divider.MaterialDivider
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginHorizontal="20dp"
+                                    android:layout_marginTop="20dp"
+                                    android:alpha="0.3"
+                                    app:dividerColor="@color/black" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginHorizontal="20dp"
+                                    android:layout_marginTop="8dp"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:text="-"
+                                    android:textSize="10sp" />
+                            </LinearLayout>
+
+
+
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
 
 
                 </LinearLayout>
