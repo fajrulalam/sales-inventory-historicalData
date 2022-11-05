@@ -233,6 +233,50 @@ public class HomeFragment extends Fragment {
         });
 
 
+        binding.day1Container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Day1 clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.day2Container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Day2 clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.day3Container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Day3 clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.day4Container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Day4 clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.day5Container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Day5 clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.day6Container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Day6 clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        binding.day7Container.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "Day7 clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
 
 
