@@ -36,6 +36,7 @@ import com.example.dashboardandinventory2.NavigationDrawerActivity;
 import com.example.dashboardandinventory2.R;
 import com.example.dashboardandinventory2.databinding.FragmentHomeBinding;
 import com.example.dashboardandinventory2.stockDialog;
+import com.example.dashboardandinventory2.ui.gallery.GalleryFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +50,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,9 +92,6 @@ public class HomeFragment extends Fragment {
 
         cal = new GregorianCalendar();
         locale = new Locale("id", "ID");
-
-
-
 
 //        final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -168,7 +169,7 @@ public class HomeFragment extends Fragment {
 
 
 
-        binding.revenueContainer.setOnClickListener(new View.OnClickListener() {
+        binding.DailyRevenueContainer.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
@@ -183,7 +184,51 @@ public class HomeFragment extends Fragment {
                 bottomSheetFull.setArguments(bundle);
                 bottomSheetFull.show(getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
 
+            }
+        });
 
+        binding.MonthlyRevenueContainer.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+
+
+                Long datetime = System.currentTimeMillis();
+                String dateTime_formatted = new SimpleDateFormat("MMMM yyyy").format(datetime);
+                bundle.putString("date", dateTime_formatted);
+                bundle.putString("yearly_montly_daily", "monthly");
+
+                FragmentBottomSheetFull bottomSheetFull = new FragmentBottomSheetFull();
+                bottomSheetFull.setArguments(bundle);
+                bottomSheetFull.show(getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
+            }
+        });
+
+        binding.YearlyRevenueContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+
+                Long datetime = System.currentTimeMillis();
+                String dateTime_formatted = new SimpleDateFormat("dd MMM yyyy").format(datetime);
+                bundle.putString("date", dateTime_formatted.substring(7));
+                bundle.putString("yearly_montly_daily", "monthly");
+
+                FragmentBottomSheetFull bottomSheetFull = new FragmentBottomSheetFull();
+                bottomSheetFull.setArguments(bundle);
+                bottomSheetFull.show(getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
+            }
+        });
+
+        binding.HistoryContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GalleryFragment nextFrag= new GalleryFragment();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(((ViewGroup)getView().getParent()).getId(), nextFrag, "findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 

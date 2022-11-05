@@ -30,7 +30,7 @@
                     android:orientation="vertical">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/revenue_container"
+                        android:id="@+id/DailyRevenue_container"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_marginLeft="20dp"
@@ -99,6 +99,7 @@
                         android:orientation="horizontal">
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/MonthlyRevenue_Container"
                             android:layout_width="0dp"
                             android:layout_height="150dp"
                             android:layout_weight="0.7"
@@ -217,6 +218,7 @@
                         android:orientation="horizontal">
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/HistoryContainer"
                             android:layout_width="0dp"
                             android:layout_marginTop="24dp"
                             android:layout_marginLeft="20dp"
@@ -262,6 +264,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/YearlyRevenue_container"
                             android:layout_width="0dp"
                             android:layout_height="150dp"
                             android:layout_weight="0.7"
