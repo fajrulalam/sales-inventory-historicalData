@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2.5dp"
+    android:background="@color/white"
+    android:layout_marginTop="2.5dp">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="90dp"
+        android:layout_height="80dp"
+        android:background="@color/primary_dark"
+        android:padding="12dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/nomorPesanan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center"
+            android:text="100"
+            android:textColor="@color/white"
+            android:textSize="28dp" />
+
+        <TextView
+            android:id="@+id/waktuServe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nomorPesanan"
+            android:layout_centerHorizontal="true"
+            android:text="20m 81s"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/detailPesanan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="That scheme does layed as preferred. In particular, my preference would be to display buttons and spinners as per Theme.Light, but preserve the other style formatting offered by the Theme.DeviceDefault.Light"
+        android:layout_marginLeft="8dp"
+        android:textSize="14dp"
+        android:layout_marginTop="-7.5dp"/>
+
+
+</LinearLayout>

@@ -168,6 +168,7 @@
 
 
                         <androidx.cardview.widget.CardView
+                            android:id="@+id/viewOrders"
                             android:layout_width="0dp"
                             android:layout_height="150dp"
                             android:layout_marginLeft="8dp"
@@ -201,7 +202,7 @@
                                     android:layout_marginTop="4dp"
                                     android:fontFamily="@font/montserrat_bold"
                                     android:gravity="center"
-                                    android:text="Analytics"
+                                    android:text="View Orders"
                                     android:textColor="@color/black"
                                     android:textSize="16dp" />
 
@@ -469,8 +470,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginTop="-20dp"
+                        android:orientation="horizontal"
                         android:paddingBottom="10dp">
 
                         <androidx.cardview.widget.CardView

@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import static java.lang.Math.abs;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -36,6 +37,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.dashboardandinventory2.FragmentBottomSheetFull;
 import com.example.dashboardandinventory2.NavigationDrawerActivity;
 import com.example.dashboardandinventory2.R;
+import com.example.dashboardandinventory2.ViewOrdersActivity;
 import com.example.dashboardandinventory2.databinding.FragmentHomeBinding;
 import com.example.dashboardandinventory2.stockDialog;
 import com.example.dashboardandinventory2.ui.gallery.GalleryFragment;
@@ -89,7 +91,7 @@ public class HomeFragment extends Fragment {
      long pendapatanTahunLalu;
      Locale locale;
 
-     FirebaseFirestore fs;
+    FirebaseFirestore fs;
         Calendar cal;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -146,7 +148,6 @@ public class HomeFragment extends Fragment {
                         }
                         //getThisDayLastMonth
 
-
                         fs.collection("YearlyTransaction").document(getDate().substring(0, 4)).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -181,17 +182,20 @@ public class HomeFragment extends Fragment {
 
 
 
+
         binding.DailyRevenueContainer.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
+                if (pendapatanHariIni == 0) {
+                    Toast.makeText(getContext(), "Masih belum ada input hari ini", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Bundle bundle = new Bundle();
-
                 Long datetime = System.currentTimeMillis();
                 String dateTime_formatted = new SimpleDateFormat("dd MMM yyyy").format(datetime);
                 bundle.putString("date", dateTime_formatted);
                 bundle.putString("yearly_montly_daily", "daily");
-
                 FragmentBottomSheetFull bottomSheetFull = new FragmentBottomSheetFull();
                 bottomSheetFull.setArguments(bundle);
                 bottomSheetFull.show(getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
@@ -203,9 +207,11 @@ public class HomeFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
+                if (pendapatanBulanIni == 0) {
+                    Toast.makeText(getContext(), "Belum ada input di bulan ini", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Bundle bundle = new Bundle();
-
-
                 Long datetime = System.currentTimeMillis();
                 String dateTime_formatted = new SimpleDateFormat("MMMM yyyy").format(datetime);
                 bundle.putString("date", dateTime_formatted);
@@ -216,6 +222,7 @@ public class HomeFragment extends Fragment {
                 bottomSheetFull.show(getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
             }
         });
+
 
         binding.YearlyRevenueContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,6 +237,15 @@ public class HomeFragment extends Fragment {
                 FragmentBottomSheetFull bottomSheetFull = new FragmentBottomSheetFull();
                 bottomSheetFull.setArguments(bundle);
                 bottomSheetFull.show(getActivity().getSupportFragmentManager(), bottomSheetFull.getTag());
+            }
+        });
+
+
+        binding.viewOrders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ViewOrdersActivity.class);
+                startActivity(intent);
             }
         });
 
