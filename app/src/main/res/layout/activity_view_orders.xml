@@ -89,18 +89,18 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginHorizontal="5dp"
-            android:background="#19CCCCCC"
+            android:background="@color/buttonNotSelected"
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginHorizontal="5dp"
-            android:background="#19CCCCCC"
+            android:background="#CCCCCC"
             android:id="@+id/recyclerView2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 

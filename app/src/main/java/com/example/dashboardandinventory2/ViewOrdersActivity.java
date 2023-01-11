@@ -26,10 +26,15 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 
 public class ViewOrdersActivity extends AppCompatActivity {
@@ -95,6 +100,7 @@ public class ViewOrdersActivity extends AppCompatActivity {
 
     private void fetchRecentlyServed() {
         fs.collection("RecentyServed").orderBy("timestampServe", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -138,15 +144,23 @@ public class ViewOrdersActivity extends AppCompatActivity {
                             int second = duration % 60;
                             int minute = duration / 60;
                             String second_str = ""+second;
-                            if (second <10 ) {
-                                second_str = "0" + second_str;
-                            }
-                            String duration_str = minute + ":" + second_str;
+//                            if (second <10 ) {
+//                                second_str = "0" + second_str;
+//                            }
+                            String duration_str = minute + "m " + second_str +"s";
                             Log.i("DURATION", duration_str);
+
+                            Date date = new Date(waktuPesan_int *1000);
+                            SimpleDateFormat sdf = new SimpleDateFormat("EEEE,MMMM d,yyyy HH:mm:ss", Locale.ENGLISH);
+                            sdf.setTimeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Jakarta")));
+                            String formattedDate = sdf.format(date);
+                            String hourSecond = formattedDate.substring(formattedDate.length()-8, formattedDate.length()-3);
+
+//                            System.out.println(formattedDate); // Tuesday,November 1,2011 12:00,AM
 
 
                             newPesananArrayListServed.add(
-                                    new Order(String.valueOf(customerNumber_int), bungkus_int, rincianPesanan, duration_str)
+                                    new Order(String.valueOf(customerNumber_int), bungkus_int, rincianPesanan, duration_str, hourSecond)
                             );
                         }
 
@@ -166,6 +180,7 @@ public class ViewOrdersActivity extends AppCompatActivity {
 
     private void fetchPendingOrders(){
         fs.collection("Status").orderBy("waktuPesan", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                 if (error != null) {
@@ -211,11 +226,21 @@ public class ViewOrdersActivity extends AppCompatActivity {
                                 i++;
                             }
 
+                            String waktuPesan = map.get("waktuPesan").toString();
+                            waktuPesan = waktuPesan.substring(waktuPesan.indexOf("=")+1, waktuPesan.indexOf(","));
+                            int waktuPesan_int = Integer.parseInt(waktuPesan);
+
+                            Date date = new Date(waktuPesan_int *1000);
+                            SimpleDateFormat sdf = new SimpleDateFormat("EEEE,MMMM d,yyyy HH:mm:ss", Locale.ENGLISH);
+                            sdf.setTimeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Jakarta")));
+                            String formattedDate = sdf.format(date);
+                            String hourSecond = formattedDate.substring(formattedDate.length()-8, formattedDate.length()-3);
+
 
 
 
                             newPesananArrayListPending.add(
-                                    new Order(String.valueOf(customerNumber_int), bungkus_int, item_quantity_combined, "pending...")
+                                    new Order(String.valueOf(customerNumber_int), bungkus_int, item_quantity_combined, "...", hourSecond)
                             );
                         }
 
@@ -280,12 +305,14 @@ public class ViewOrdersActivity extends AppCompatActivity {
         int bungkus_or_not;
         String rincianPesanan;
         String timeRequired;
+        String waktuPesan;
 
-        public Order(String customerNumber, int bungkus_or_not, String rincianPesanan, String timeRequired) {
+        public Order(String customerNumber, int bungkus_or_not, String rincianPesanan, String timeRequired, String waktuPesan) {
             this.customerNumber = customerNumber;
             this.bungkus_or_not = bungkus_or_not;
             this.rincianPesanan = rincianPesanan;
             this.timeRequired = timeRequired;
+            this.waktuPesan = waktuPesan;
         }
     }
 
@@ -320,6 +347,7 @@ public class ViewOrdersActivity extends AppCompatActivity {
             holder.detailPesanan.setText(String.valueOf(orders.get(position).rincianPesanan));
             holder.nomorPesanan.setText(String.valueOf(orders.get(position).customerNumber));
             holder.waktuServe.setText(String.valueOf(orders.get(position).timeRequired));
+            holder.waktuPesan.setText(String.valueOf(orders.get(position).waktuPesan));
         }
 
         @Override
@@ -333,10 +361,12 @@ public class ViewOrdersActivity extends AppCompatActivity {
             TextView nomorPesanan;
             TextView waktuServe;
             TextView detailPesanan;
+            TextView waktuPesan;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
 
+                waktuPesan = itemView.findViewById(R.id.waktuPesan);
                 nomorPesanan = itemView.findViewById(R.id.nomorPesanan);
                 relativeLayout = itemView.findViewById(R.id.relativeLayout);
                 waktuServe = itemView.findViewById(R.id.waktuServe);
