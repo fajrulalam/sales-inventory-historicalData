@@ -4,21 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.motion.widget.FloatLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.example.dashboardandinventory2.databinding.ActivityViewOrdersBinding;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,23 +24,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-
 public class ViewOrdersActivity extends AppCompatActivity {
 
     ActivityViewOrdersBinding binding;
     FirebaseFirestore fs;
-    ArrayList<Order> newPesananArrayListServed;
-    ArrayList<Order> newPesananArrayListPending;
-    RecyclerAdapter recyclerAdapter_Served;
-    RecyclerAdapter recyclerAdapter_Pending;
-
+    ArrayList<OrderBlock> newPesananArrayListServed;
+    ArrayList<OrderBlock> newPesananArrayListPending;
+    RecyclerAdapter2 recyclerAdapter_Served;
+    RecyclerAdapter2 recyclerAdapter_Pending;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,24 +46,19 @@ public class ViewOrdersActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        newPesananArrayListServed = new ArrayList<Order>();
-        newPesananArrayListPending = new ArrayList<Order>();
-        recyclerAdapter_Served = new RecyclerAdapter(newPesananArrayListServed);
-        recyclerAdapter_Pending = new RecyclerAdapter(newPesananArrayListPending);
+        newPesananArrayListServed = new ArrayList<>();
+        newPesananArrayListPending = new ArrayList<>();
+        
+        // Initialize RecyclerAdapter2 with context and order block lists
+        recyclerAdapter_Served = new RecyclerAdapter2(this, newPesananArrayListServed);
+        recyclerAdapter_Pending = new RecyclerAdapter2(this, newPesananArrayListPending);
+        
         binding.recyclerView.setAdapter(recyclerAdapter_Served);
         binding.recyclerView2.setAdapter(recyclerAdapter_Pending);
-
 
         fs = FirebaseFirestore.getInstance();
         fetchRecentlyServed();
         fetchPendingOrders();
-
-
-
-
-
-
-
 
         binding.servedOrdersLinearLayout.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -88,18 +75,22 @@ public class ViewOrdersActivity extends AppCompatActivity {
                 changeStatus(Type.Pending);
             }
         });
-
-
-
-
-
-
-
-
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Clean up timers to prevent memory leaks
+        if (recyclerAdapter_Served != null) {
+            recyclerAdapter_Served.stopAllTimers();
+        }
+        if (recyclerAdapter_Pending != null) {
+            recyclerAdapter_Pending.stopAllTimers();
+        }
     }
 
     private void fetchRecentlyServed() {
-        fs.collection("RecentyServed").orderBy("timestampServe", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        fs.collection("RecentlyServed").orderBy("timestampServe", Query.Direction.DESCENDING).limit(50).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -108,69 +99,204 @@ public class ViewOrdersActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (value != null){
+                if (value != null) {
                     List<DocumentSnapshot> snapshotList = value.getDocuments();
                     newPesananArrayListServed.clear();
+                    
                     for (DocumentSnapshot snapshot : snapshotList) {
+                        Map<String, Object> map = snapshot.getData();
 
-                        Map<String, Object> map = (Map<String, Object>) snapshot.getData();
-                        Object customerNumber_object = map.get("customerNumber");
-                        int customerNumber_int;
-
-//                        Log.i("MAP UNCHECKED:", map.toString());
-
-//                        try {
-                        int bungkus = Integer.parseInt(String.valueOf(map.get("bungkus_or_not")));
-                        if (bungkus != 2) {
-                            customerNumber_int = Integer.parseInt(String.valueOf(customerNumber_object));
-                            Object pesanan_object = map.get("itemID");
-                            String pesanan_String = (String.valueOf(pesanan_object));
-                            Object quantity_object = map.get("quantity");
-                            String quantity_string = (String.valueOf(quantity_object));
-                            Object bungkus_object = map.get("bungkus_or_not");
-                            String bungkus_string = String.valueOf(bungkus_object);
-                            int bungkus_int = Integer.parseInt(bungkus_string);
-                            String rincianPesanan = map.get("rincianPesanan").toString();
-
-                            String waktuPesan = map.get("waktuPesan").toString();
-                            String waktuServe = map.get("timestampServe").toString();
-                            waktuPesan = waktuPesan.substring(waktuPesan.indexOf("=")+1, waktuPesan.indexOf(","));
-                            int waktuPesan_int = Integer.parseInt(waktuPesan);
-                            waktuServe = waktuServe.substring(waktuServe.indexOf("=")+1, waktuServe.indexOf(","));
-                            int waktuServe_int = Integer.parseInt(waktuServe);
-
-                            int duration = waktuServe_int - waktuPesan_int;
-
-                            int second = duration % 60;
-                            int minute = duration / 60;
-                            String second_str = ""+second;
-//                            if (second <10 ) {
-//                                second_str = "0" + second_str;
-//                            }
-                            String duration_str = minute + "m " + second_str +"s";
-                            Log.i("DURATION", duration_str);
-
-                            Date date = new Date(waktuPesan_int *1000);
-                            SimpleDateFormat sdf = new SimpleDateFormat("EEEE,MMMM d,yyyy HH:mm:ss", Locale.ENGLISH);
-                            sdf.setTimeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Jakarta")));
-                            String formattedDate = sdf.format(date);
-                            String hourSecond = formattedDate.substring(formattedDate.length()-8, formattedDate.length()-3);
-
-//                            System.out.println(formattedDate); // Tuesday,November 1,2011 12:00,AM
-
-
-                            newPesananArrayListServed.add(
-                                    new Order(String.valueOf(customerNumber_int), bungkus_int, rincianPesanan, duration_str, hourSecond)
+                        if (map == null) continue;
+                        
+                        try {
+                            // Parse bungkus/take-away status
+                            int bungkus = 0;
+                            if (map.containsKey("bungkus_or_not")) {
+                                bungkus = Integer.parseInt(String.valueOf(map.get("bungkus_or_not")));
+                            } else if (map.containsKey("bungkus")) {
+                                bungkus = Integer.parseInt(String.valueOf(map.get("bungkus")));
+                            }
+                            
+                            if (bungkus == 2) continue; // Skip certain orders based on existing logic
+                            
+                            // Parse customer info
+                            int customerNumber = Integer.parseInt(String.valueOf(map.get("customerNumber")));
+                            String namaCustomer = map.containsKey("namaCustomer") ? 
+                                    String.valueOf(map.get("namaCustomer")) : "Customer";
+                            
+                            // Get order items
+                            ArrayList<NewOrderItem> orderItems = new ArrayList<>();
+                            
+                            // Handle orderItems array format for RecentlyServed collection
+                            if (map.containsKey("orderItems") && map.get("orderItems") instanceof List) {
+                                List<Map<String, Object>> orderItemsList = (List<Map<String, Object>>) map.get("orderItems");
+                                
+                                Log.d("RecentlyServed", "Found " + orderItemsList.size() + " order items");
+                                
+                                for (Map<String, Object> item : orderItemsList) {
+                                    // Check if this is the RecentlyServed format with direct fields
+                                    if (item.containsKey("namaPesanan") && item.containsKey("quantity") && 
+                                        (item.containsKey("preparedQuantity") || item.containsKey("orderType"))) {
+                                        
+                                        // This is RecentlyServed format
+                                        String namaPesanan = String.valueOf(item.get("namaPesanan"));
+                                        String orderType = item.containsKey("orderType") ? 
+                                                String.valueOf(item.get("orderType")) : "take-away";
+                                        
+                                        int quantity = item.containsKey("quantity") ?
+                                                Integer.parseInt(String.valueOf(item.get("quantity"))) : 1;
+                                        
+                                        int preparedQuantity = item.containsKey("preparedQuantity") ?
+                                                Integer.parseInt(String.valueOf(item.get("preparedQuantity"))) : quantity;
+                                        
+                                        String status = item.containsKey("status") ?
+                                                String.valueOf(item.get("status")) : "completed";
+                                        
+                                        Log.d("RecentlyServed", "Item: " + namaPesanan + 
+                                               " (" + orderType + ") - " + preparedQuantity + "/" + quantity + 
+                                               " Status: " + status);
+                                        
+                                        // Create order item directly from the fields
+                                        NewOrderItem orderItem = new NewOrderItem(
+                                            namaPesanan,
+                                            orderType,
+                                            quantity,
+                                            status
+                                        );
+                                        orderItem.setPreparedQuantity(preparedQuantity);
+                                        orderItems.add(orderItem);
+                                        
+                                    } else {
+                                        // This is Status collection format with dineInQuantity/takeAwayQuantity
+                                        String namaPesanan = String.valueOf(item.get("namaPesanan"));
+                                        
+                                        // Get dineInQuantity and takeAwayQuantity
+                                        int dineInQuantity = item.containsKey("dineInQuantity") ?
+                                            Integer.parseInt(String.valueOf(item.get("dineInQuantity"))) : 0;
+                                        
+                                        int takeAwayQuantity = item.containsKey("takeAwayQuantity") ?
+                                            Integer.parseInt(String.valueOf(item.get("takeAwayQuantity"))) : 0;
+                                        
+                                        // Create dine-in order item if quantity > 0
+                                        if (dineInQuantity > 0) {
+                                            NewOrderItem orderItem = new NewOrderItem(
+                                                namaPesanan,
+                                                "dine-in",
+                                                dineInQuantity,
+                                                "completed"
+                                            );
+                                            orderItem.setPreparedQuantity(dineInQuantity); // Mark as fully served
+                                            orderItems.add(orderItem);
+                                        }
+                                        
+                                        // Create take-away order item if quantity > 0
+                                        if (takeAwayQuantity > 0) {
+                                            NewOrderItem orderItem = new NewOrderItem(
+                                                namaPesanan,
+                                                "take-away",
+                                                takeAwayQuantity,
+                                                "completed"
+                                            );
+                                            orderItem.setPreparedQuantity(takeAwayQuantity); // Mark as fully served
+                                            orderItems.add(orderItem);
+                                        }
+                                    }
+                                }
+                            } else if (map.containsKey("rincianPesanan")) {
+                                // Fallback to old rincianPesanan format 
+                                String rincianPesanan = map.get("rincianPesanan").toString();
+                                NewOrderItem orderItem = new NewOrderItem(
+                                    rincianPesanan,
+                                    bungkus == 1 ? "take-away" : "dine-in",
+                                    1,
+                                    "completed"
+                                );
+                                orderItem.setPreparedQuantity(1); // Mark as served
+                                orderItems.add(orderItem);
+                            }
+                            
+                            // Format timestamp for display and calculate duration
+                            String hourSecond = "";
+                            String durationStr = "...";
+                            
+                            if (map.containsKey("waktuPesan")) {
+                                Object waktuPesanObj = map.get("waktuPesan");
+                                if (waktuPesanObj instanceof Timestamp) {
+                                    // Handle Timestamp format
+                                    Timestamp timestamp = (Timestamp) waktuPesanObj;
+                                    Date date = timestamp.toDate();
+                                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+                                    sdf.setTimeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Jakarta")));
+                                    hourSecond = sdf.format(date);
+                                    
+                                    // Calculate duration if timestampServe is available
+                                    if (map.containsKey("timestampServe") && map.get("timestampServe") instanceof Timestamp) {
+                                        Timestamp serveTimestamp = (Timestamp) map.get("timestampServe");
+                                        long durationSeconds = serveTimestamp.getSeconds() - timestamp.getSeconds();
+                                        int minutes = (int) (durationSeconds / 60);
+                                        int seconds = (int) (durationSeconds % 60);
+                                        durationStr = minutes + "m " + seconds + "s";
+                                    }
+                                } else {
+                                    // Fallback to legacy timestamp format
+                                    try {
+                                        String waktuPesan = waktuPesanObj.toString();
+                                        waktuPesan = waktuPesan.substring(waktuPesan.indexOf("=")+1, waktuPesan.indexOf(","));
+                                        int waktuPesan_int = Integer.parseInt(waktuPesan);
+                                        
+                                        Date date = new Date(waktuPesan_int * 1000);
+                                        SimpleDateFormat sdf = new SimpleDateFormat("EEEE,MMMM d,yyyy HH:mm:ss", Locale.ENGLISH);
+                                        sdf.setTimeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Jakarta")));
+                                        String formattedDate = sdf.format(date);
+                                        hourSecond = formattedDate.substring(formattedDate.length()-8, formattedDate.length()-3);
+                                        
+                                        // Calculate duration if timestampServe is available
+                                        if (map.containsKey("timestampServe")) {
+                                            String waktuServe = map.get("timestampServe").toString();
+                                            waktuServe = waktuServe.substring(waktuServe.indexOf("=")+1, waktuServe.indexOf(","));
+                                            int waktuServe_int = Integer.parseInt(waktuServe);
+                                            
+                                            int duration = waktuServe_int - waktuPesan_int;
+                                            int second = duration % 60;
+                                            int minute = duration / 60;
+                                            durationStr = minute + "m " + second + "s";
+                                        }
+                                    } catch (Exception e) {
+                                        Log.e("ParseError", "Error parsing legacy timestamp", e);
+                                    }
+                                }
+                            }
+                            
+                            // Get waktuPengambilan if available
+                            String waktuPengambilan = map.containsKey("waktuPengambilan") ? 
+                                    String.valueOf(map.get("waktuPengambilan")) : "Tidak Memesan";
+                            
+                            // Debug log for order items
+                            Log.d("ServedOrders", "Customer #" + customerNumber + " has " + orderItems.size() + " items");
+                            for (NewOrderItem item : orderItems) {
+                                Log.d("ServedOrders", "Item: " + item.getNamaPesanan() + 
+                                      " (" + item.getOrderType() + ") - " + 
+                                      item.getPreparedQuantity() + "/" + item.getQuantity());
+                            }
+                            
+                            // Create OrderBlock with servingTime and add to list
+                            OrderBlock orderBlock = new OrderBlock(
+                                    bungkus,
+                                    customerNumber,
+                                    namaCustomer,
+                                    orderItems,
+                                    waktuPengambilan,
+                                    hourSecond,  // Display time
+                                    durationStr  // Serving duration
                             );
+                            
+                            newPesananArrayListServed.add(orderBlock);
+                        } catch (Exception e) {
+                            Log.e("ParseError", "Error parsing served order data: " + e.getMessage(), e);
                         }
-
-
-
-
                     }
 
                     recyclerAdapter_Served.notifyDataSetChanged();
-
                 } else {
                     Log.e("NULL", "onEvent: query snapshot was null");
                 }
@@ -178,8 +304,8 @@ public class ViewOrdersActivity extends AppCompatActivity {
         });
     }
 
-    private void fetchPendingOrders(){
-        fs.collection("Status").orderBy("waktuPesan", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
+    private void fetchPendingOrders() {
+        fs.collection("Status").orderBy("waktuPesan", Query.Direction.DESCENDING).limit(50).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -188,69 +314,170 @@ public class ViewOrdersActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (value != null){
+                if (value != null) {
                     List<DocumentSnapshot> snapshotList = value.getDocuments();
                     newPesananArrayListPending.clear();
+                    
                     for (DocumentSnapshot snapshot : snapshotList) {
-
-                        Map<String, Object> map = (Map<String, Object>) snapshot.getData();
-                        Object customerNumber_object = map.get("customerNumber");
-                        int customerNumber_int;
-
-//                        Log.i("MAP UNCHECKED:", map.toString());
-
-//                        try {
-                        int bungkus = Integer.parseInt(String.valueOf(map.get("bungkus")));
-                        if (bungkus != 2) {
-                            customerNumber_int = Integer.parseInt(String.valueOf(customerNumber_object));
-                            Log.i("CUSTOMERNUMBER", customerNumber_int+"");
-                            Object pesanan_object = map.get("itemID");
-                            String pesanan_String = (String.valueOf(pesanan_object));
-                            Object quantity_object = map.get("quantity");
-                            String quantity_string = (String.valueOf(quantity_object));
-                            Object bungkus_object = map.get("bungkus");
-                            String bungkus_string = String.valueOf(bungkus_object);
-                            int bungkus_int = Integer.parseInt(bungkus_string);
-                            List<String> itemID_uncombined = Arrays.asList(pesanan_String.split("\\s*,\\s"));
-                            List<String> quantity_uncombined = Arrays.asList(quantity_string.split("\\s*,\\s"));
-                            int i = 0;
-                            String item_quantity_combined = "";
-                            while (i<itemID_uncombined.size()) {
-                                String item_container = itemID_uncombined.get(i);
-                                String quantiy_container = quantity_uncombined.get(i);
-                                if (i == itemID_uncombined.size() -1) {
-                                    item_quantity_combined += item_container + " (" + quantiy_container + ")";
-                                } else {
-                                    item_quantity_combined += item_container + " (" + quantiy_container + ") , ";
-                                }
-                                i++;
+                        Map<String, Object> map = snapshot.getData();
+                        if (map == null) continue;
+                        
+                        try {
+                            // Parse bungkus/take-away status
+                            int bungkus = 0;
+                            if (map.containsKey("bungkus")) {
+                                bungkus = Integer.parseInt(String.valueOf(map.get("bungkus")));
+                            } else if (map.containsKey("bungkus_or_not")) {
+                                bungkus = Integer.parseInt(String.valueOf(map.get("bungkus_or_not")));
                             }
-
-                            String waktuPesan = map.get("waktuPesan").toString();
-                            waktuPesan = waktuPesan.substring(waktuPesan.indexOf("=")+1, waktuPesan.indexOf(","));
-                            int waktuPesan_int = Integer.parseInt(waktuPesan);
-
-                            Date date = new Date(waktuPesan_int *1000);
-                            SimpleDateFormat sdf = new SimpleDateFormat("EEEE,MMMM d,yyyy HH:mm:ss", Locale.ENGLISH);
-                            sdf.setTimeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Jakarta")));
-                            String formattedDate = sdf.format(date);
-                            String hourSecond = formattedDate.substring(formattedDate.length()-8, formattedDate.length()-3);
-
-
-
-
-                            newPesananArrayListPending.add(
-                                    new Order(String.valueOf(customerNumber_int), bungkus_int, item_quantity_combined, "...", hourSecond)
+                            
+                            if (bungkus == 2) continue; // Skip certain orders based on existing logic
+                            
+                            // Parse customer info
+                            int customerNumber = Integer.parseInt(String.valueOf(map.get("customerNumber")));
+                            String namaCustomer = map.containsKey("namaCustomer") ? 
+                                    String.valueOf(map.get("namaCustomer")) : "Customer";
+                            
+                            // Get order items
+                            ArrayList<NewOrderItem> orderItems = new ArrayList<>();
+                            
+                            if (map.containsKey("orderItems") && map.get("orderItems") instanceof List) {
+                                List<Map<String, Object>> orderItemsList = (List<Map<String, Object>>) map.get("orderItems");
+                                
+                                Log.d("PendingOrders", "Found " + orderItemsList.size() + " order items");
+                                
+                                for (Map<String, Object> item : orderItemsList) {
+                                    // Check if this is the direct format with quantity and orderType fields
+                                    if (item.containsKey("namaPesanan") && item.containsKey("quantity") && 
+                                        (item.containsKey("preparedQuantity") || item.containsKey("orderType"))) {
+                                        
+                                        // This is direct format
+                                        String namaPesanan = String.valueOf(item.get("namaPesanan"));
+                                        String orderType = item.containsKey("orderType") ? 
+                                                String.valueOf(item.get("orderType")) : "take-away";
+                                        
+                                        int quantity = item.containsKey("quantity") ?
+                                                Integer.parseInt(String.valueOf(item.get("quantity"))) : 1;
+                                        
+                                        int preparedQuantity = item.containsKey("preparedQuantity") ?
+                                                Integer.parseInt(String.valueOf(item.get("preparedQuantity"))) : 0;
+                                        
+                                        String status = item.containsKey("status") ?
+                                                String.valueOf(item.get("status")) : "pending";
+                                        
+                                        Log.d("PendingOrders", "Item: " + namaPesanan + 
+                                               " (" + orderType + ") - " + preparedQuantity + "/" + quantity + 
+                                               " Status: " + status);
+                                        
+                                        // Create order item directly from the fields
+                                        NewOrderItem orderItem = new NewOrderItem(
+                                            namaPesanan,
+                                            orderType,
+                                            quantity,
+                                            status
+                                        );
+                                        orderItem.setPreparedQuantity(preparedQuantity);
+                                        orderItems.add(orderItem);
+                                        
+                                    } else {
+                                        // This is Status collection format with dineInQuantity/takeAwayQuantity
+                                        String namaPesanan = String.valueOf(item.get("namaPesanan"));
+                                        
+                                        // Get dineInQuantity and takeAwayQuantity
+                                        int dineInQuantity = item.containsKey("dineInQuantity") ?
+                                            Integer.parseInt(String.valueOf(item.get("dineInQuantity"))) : 0;
+                                        
+                                        int takeAwayQuantity = item.containsKey("takeAwayQuantity") ?
+                                            Integer.parseInt(String.valueOf(item.get("takeAwayQuantity"))) : 0;
+                                        
+                                        // Create dine-in order item if quantity > 0
+                                        if (dineInQuantity > 0) {
+                                            orderItems.add(new NewOrderItem(
+                                                namaPesanan,
+                                                "dine-in",
+                                                dineInQuantity,
+                                                "pending"
+                                            ));
+                                        }
+                                        
+                                        // Create take-away order item if quantity > 0
+                                        if (takeAwayQuantity > 0) {
+                                            orderItems.add(new NewOrderItem(
+                                                namaPesanan,
+                                                "take-away",
+                                                takeAwayQuantity,
+                                                "pending"
+                                            ));
+                                        }
+                                    }
+                                }
+                            } else if (map.containsKey("rincianPesanan")) {
+                                // Fallback to old rincianPesanan format if available
+                                String rincianPesanan = map.get("rincianPesanan").toString();
+                                NewOrderItem orderItem = new NewOrderItem(
+                                    rincianPesanan,
+                                    bungkus == 1 ? "take-away" : "dine-in",
+                                    1,
+                                    "pending"
+                                );
+                                orderItems.add(orderItem);
+                            }
+                            
+                            // Parse time information
+                            String waktuPengambilan = map.containsKey("waktuPengambilan") ? 
+                                    String.valueOf(map.get("waktuPengambilan")) : "Tidak Memesan";
+                            
+                            // Format timestamp for display and extract timestamp for count-up timer
+                            String hourSecond = "";
+                            long orderTimestampMs = 0;
+                            
+                            if (map.containsKey("waktuPesan")) {
+                                Object waktuPesanObj = map.get("waktuPesan");
+                                if (waktuPesanObj instanceof Timestamp) {
+                                    Timestamp timestamp = (Timestamp) waktuPesanObj;
+                                    Date date = timestamp.toDate();
+                                    
+                                    // Get the display time
+                                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+                                    sdf.setTimeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Jakarta")));
+                                    hourSecond = sdf.format(date);
+                                    
+                                    // Get the timestamp in milliseconds for count-up timer
+                                    orderTimestampMs = date.getTime();
+                                } else {
+                                    // Fallback to old timestamp parsing if needed
+                                    String waktuPesan = waktuPesanObj.toString();
+                                    waktuPesan = waktuPesan.substring(waktuPesan.indexOf("=")+1, waktuPesan.indexOf(","));
+                                    int waktuPesan_int = Integer.parseInt(waktuPesan);
+                                    Date date = new Date(waktuPesan_int * 1000);
+                                    SimpleDateFormat sdf = new SimpleDateFormat("EEEE,MMMM d,yyyy HH:mm:ss", Locale.ENGLISH);
+                                    sdf.setTimeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Jakarta")));
+                                    String formattedDate = sdf.format(date);
+                                    hourSecond = formattedDate.substring(formattedDate.length()-8, formattedDate.length()-3);
+                                    
+                                    // Get the timestamp in milliseconds for count-up timer
+                                    orderTimestampMs = waktuPesan_int * 1000L;
+                                }
+                            }
+                            
+                            // Create OrderBlock with timestamp for count-up timer
+                            OrderBlock orderBlock = new OrderBlock(
+                                    bungkus,
+                                    customerNumber,
+                                    namaCustomer,
+                                    orderItems,
+                                    waktuPengambilan,
+                                    hourSecond,
+                                    orderTimestampMs
                             );
+                            
+                            newPesananArrayListPending.add(orderBlock);
+                        } catch (Exception e) {
+                            Log.e("ParseError", "Error parsing pending order data: " + e.getMessage(), e);
                         }
-
-
-
-
                     }
 
                     recyclerAdapter_Pending.notifyDataSetChanged();
-
                 } else {
                     Log.e("NULL", "onEvent: query snapshot was null");
                 }
@@ -259,8 +486,7 @@ public class ViewOrdersActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    void changeStatus(Type type){
-
+    void changeStatus(Type type) {
         binding.pendingOrdersActiveLine.setVisibility(View.INVISIBLE);
         binding.servedOrdersActiveLine.setVisibility(View.INVISIBLE);
         binding.recyclerView.setVisibility(View.GONE);
@@ -277,7 +503,6 @@ public class ViewOrdersActivity extends AppCompatActivity {
             binding.servedOrdersTextView.setTypeface(poppins_bold);
             binding.recyclerView.setVisibility(View.VISIBLE);
             fetchRecentlyServed();
-
         }
 
         if (type == Type.Pending) {
@@ -286,92 +511,11 @@ public class ViewOrdersActivity extends AppCompatActivity {
             binding.pendingOrdersTextView.setTypeface(poppins_bold);
             binding.recyclerView2.setVisibility(View.VISIBLE);
             fetchPendingOrders();
-
         }
-
-
-
     }
 
     enum Type {
         Served,
         Pending
-    }
-
-
-
-    class Order {
-        String customerNumber;
-        int bungkus_or_not;
-        String rincianPesanan;
-        String timeRequired;
-        String waktuPesan;
-
-        public Order(String customerNumber, int bungkus_or_not, String rincianPesanan, String timeRequired, String waktuPesan) {
-            this.customerNumber = customerNumber;
-            this.bungkus_or_not = bungkus_or_not;
-            this.rincianPesanan = rincianPesanan;
-            this.timeRequired = timeRequired;
-            this.waktuPesan = waktuPesan;
-        }
-    }
-
-    class RecyclerAdapter extends RecyclerView.Adapter<ViewOrdersActivity.RecyclerAdapter.ViewHolder>{
-
-        ArrayList<Order> orders;
-
-        public RecyclerAdapter(ArrayList<Order> orders) {
-            this.orders = orders;
-        }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(R.layout.singleview_orders, parent, false);
-            ViewHolder viewHolder = new ViewHolder(view);
-            return viewHolder;
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            int bungkus = (orders.get(position).bungkus_or_not);
-            if (bungkus == 1 ) {
-                holder.relativeLayout.setBackgroundColor(Color.parseColor("#F9A825"));
-
-            } else if (bungkus == 2) {
-                holder.relativeLayout.setBackgroundColor(Color.parseColor("#FFC62828"));
-//                holder.waktuPengambilan.setText(newPesananArrayList.get(position).waktuPengambilan);
-//                holder.waktuPengambilan.setVisibility(View.VISIBLE);
-            }
-            holder.detailPesanan.setText(String.valueOf(orders.get(position).rincianPesanan));
-            holder.nomorPesanan.setText(String.valueOf(orders.get(position).customerNumber));
-            holder.waktuServe.setText(String.valueOf(orders.get(position).timeRequired));
-            holder.waktuPesan.setText(String.valueOf(orders.get(position).waktuPesan));
-        }
-
-        @Override
-        public int getItemCount() {
-            return orders.size();
-        }
-
-        class ViewHolder extends RecyclerView.ViewHolder {
-
-            RelativeLayout relativeLayout;
-            TextView nomorPesanan;
-            TextView waktuServe;
-            TextView detailPesanan;
-            TextView waktuPesan;
-
-            public ViewHolder(@NonNull View itemView) {
-                super(itemView);
-
-                waktuPesan = itemView.findViewById(R.id.waktuPesan);
-                nomorPesanan = itemView.findViewById(R.id.nomorPesanan);
-                relativeLayout = itemView.findViewById(R.id.relativeLayout);
-                waktuServe = itemView.findViewById(R.id.waktuServe);
-                detailPesanan = itemView.findViewById(R.id.detailPesanan);
-            }
-        }
     }
 }
